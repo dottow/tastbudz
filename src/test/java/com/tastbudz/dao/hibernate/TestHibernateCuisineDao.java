@@ -50,7 +50,7 @@ public class TestHibernateCuisineDao extends TestCase {
 		//the session is auto-commit, so we are sure that the
 		//transaction is committed, the session is flushed
 		//after each operation
-		Cuisine actualCuisine = dao.findById(retCuisine.getId());
+		Cuisine actualCuisine = dao.read(retCuisine.getId());
 
 		//the actual Student object in the database must be
 		//equal to the original value
@@ -65,7 +65,7 @@ public class TestHibernateCuisineDao extends TestCase {
 		for (Cuisine cuisine : cuisines) {
 			cuisine = dao.save(cuisine);
 			ID id = cuisine.getId();
-			Cuisine dbCuisine = dao.findById(id);
+			Cuisine dbCuisine = dao.read(id);
 			assertEquals("Actual Cuisine and DAO should be equal", cuisine, dbCuisine);
 		}
 	}
@@ -78,12 +78,12 @@ public class TestHibernateCuisineDao extends TestCase {
 		cuisine1 = dao.save(cuisine1);
 		cuisine2 = dao.save(cuisine2);
 
-		List<Cuisine> all = dao.findAll();
+		List<Cuisine> all = dao.getAllCuisines();
 		assertEquals(2, all.size());
 		
 		Cuisine query = new Cuisine();
 		query.setName(INDIAN);
-		List<Cuisine> matches = dao.findByExample(query);
+		List<Cuisine> matches = dao.getMatchingCuisines(query);
 		assertEquals(1, matches.size());
 	}
 	
