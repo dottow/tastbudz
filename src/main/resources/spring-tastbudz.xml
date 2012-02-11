@@ -13,7 +13,10 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
      http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
      http://www.springframework.org/schema/context
 	 http://www.springframework.org/schema/context/spring-context-3.0.xsd">
-      
+	 
+	 
+  <import resource="spring-persistence.xml"/>
+  <import resource="spring-services.xml"/>
       
   <bean id="dataSourceProperties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
     <property name="location" value="datasource.${environment}.properties"/>
@@ -49,13 +52,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
-  
-  <bean id="locationDAO" class="com.tastbudz.dao.hibernate.LocationDAOHibernate"/>
-  <bean id="cuisineDAO" class="com.tastbudz.dao.hibernate.CuisineDAOHibernate"/>
-  
-  <bean id="staticDataService" class="com.tastbudz.service.impl.StaticDataServiceImpl"/>
-  <bean id="serviceLocator" class="com.tastbudz.service.ServiceLocator"/>
-  
+    
   <bean id="console" class="com.tastbudz.internal.data.Console"/>
 </beans>
 

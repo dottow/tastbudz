@@ -73,7 +73,7 @@ public class IDUserType implements UserType {
 	public void nullSafeSet(PreparedStatement st, Object value, int index, SessionImplementor session)
 			throws HibernateException, SQLException {
 		if (value == null) {
-			st.setNull(index, Types.VARCHAR);
+			st.setNull(index, Types.BINARY);
 			return;
 		}
 
@@ -95,6 +95,6 @@ public class IDUserType implements UserType {
 	}
 
 	public int[] sqlTypes() {
-		return new int[] { Types.VARCHAR };
+		return new int[] { Types.BINARY };
 	}
 }

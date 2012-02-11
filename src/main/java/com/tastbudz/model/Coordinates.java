@@ -15,11 +15,10 @@ public final class Coordinates extends PersistentEntity {
 	private double longitude;
 	@Column(name="latitude", nullable=false)
 	private double latitude;
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name="location_id")
 	private Location location;
-	
-		
+			
 	public double getLongitude() {
 		return longitude;
 	}

@@ -7,6 +7,8 @@ public final class ServiceLocator {
 	private static ServiceLocator instance=null;
 	@Autowired
 	private StaticDataService staticDataService;
+	@Autowired
+	private RestaurantService restaurantService;
 	
 	public static void initialize(ApplicationContext context) {
 		instance = context.getBean(ServiceLocator.class);
@@ -17,5 +19,8 @@ public final class ServiceLocator {
 
 	public StaticDataService getStaticDataService() {
 		return staticDataService;
+	}
+	public RestaurantService getRestaurantService() {
+		return restaurantService;
 	}
 }

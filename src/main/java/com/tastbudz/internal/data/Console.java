@@ -19,13 +19,23 @@ public final class Console   {
 	}
 	
     public Console format(String fmt, Object ...args) {
-    	//TODO
+    	if (console != null) {
+    		console.format(fmt, args);
+    	}
+    	else {
+    		System.out.format(fmt, args);
+    	}
         return this;
     }
 
     public Console printf(String format, Object ... args) {
-    	//TODO
-    	return format(format, args);
+    	if (console != null) {
+    		console.printf(format, args);
+    	}
+    	else {
+    		System.out.printf(format, args);
+    	}
+    	return this;
     }
 
     public String readLine(String fmt, Object ... args) {

@@ -29,7 +29,7 @@ public class StaticDataServiceImpl implements StaticDataService {
 
 	@Transactional(readOnly=true)
 	public List<Cuisine> getCuisines() {
-		List<Cuisine> cuisines = cuisineDAO.findAll();
+		List<Cuisine> cuisines = cuisineDAO.getAllCuisines();
 		Collections.sort(cuisines, ComparatorFactory.getComparator(Cuisine.class));
 		return cuisines;
 	}

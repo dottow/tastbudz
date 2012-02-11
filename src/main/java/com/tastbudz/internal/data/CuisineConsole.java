@@ -9,13 +9,18 @@ import com.tastbudz.service.ServiceLocator;
 import com.tastbudz.service.StaticDataService;
 
 public class CuisineConsole implements Runnable {
+	private Console console;
+	
+	public CuisineConsole(Console console) {
+		this.console = console;
+	}
+	
 	public void run() {
-		System.out.println("Cuisine console\n\n");
-		Console console = new Console();
+		console.printf("Cuisine console\n\n");
 		
 		String input="";
 		while (!(input.equals("quit"))) {
-			System.out.print("? ");
+			console.printf("? ");
 			input = console.readLine();
 			input = input.trim();
 			if ("list".equalsIgnoreCase(input)) {

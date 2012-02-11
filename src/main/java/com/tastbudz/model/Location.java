@@ -1,24 +1,31 @@
 package com.tastbudz.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.Type;
+
+import com.tastbudz.model.id.ID;
 
 
 
 @Entity
 @Table(name="tstbdz_location")
-public final class Location extends PersistentEntity {
+public final class Location implements Serializable {
 	private static final long serialVersionUID = 3182669251691316155L;
-	@ElementCollection
+	@Id
+	@Type(type="com.tastbudz.dao.hibernate.usertype.IDUserType")
+    @Column(name="restaurant_id", nullable=false)
+    private ID restaurantId;
+    @ElementCollection
 	@Column(name="street_address")
 	private List<String> streetAddressList;
 	@Column(name="cross_street")
@@ -31,12 +38,17 @@ public final class Location extends PersistentEntity {
 	private String postalCode;
 	@Column(name="country_code", nullable=false)
 	private String countryCode;
-	@OneToMany(mappedBy = "location", cascade = {CascadeType.ALL})    
-	private Set<Coordinates> coordinates;
 	
 	public Location() {
 		streetAddressList = new ArrayList<String>();
-		coordinates = new HashSet<Coordinates>();
+	}
+	
+	public ID getRestaurantId() {
+		return restaurantId;
+	}
+	
+	public void setRestaurantId(ID restaurantId) {
+		this.restaurantId = restaurantId;
 	}
 	
 	public void setAddress(String ... address) {
@@ -92,32 +104,21 @@ public final class Location extends PersistentEntity {
 		this.countryCode = countryCode;
 	}
 	
-	public Set<Coordinates> getCoordinates() {
-		return coordinates;
-	}
-	public void setCoordinates(Set<Coordinates> coordinates) {
-		this.coordinates = coordinates;
-	}
-
 	@Override
 	public String toString() {
 		StringBuffer b = new StringBuffer();
-		b.append(super.toString());
-		b.append("\n");
-		b.append(getAddress());
-		b.append("\n");
+		//b.append(super.toString());
+		//b.append("\n");
+		String address = getAddress();
+		if (!StringUtils.isBlank(address)) {
+			b.append(address);
+			b.append("\n");
+		}
 		b.append(city);
 		b.append(", ");
 		b.append(stateCode);
 		b.append(" ");
 		b.append(postalCode);
-		if (coordinates.size() > 0) {
-			b.append("\n");
-			b.append("Coordinates:\n");
-			for (Coordinates c : coordinates) {
-				b.append(c.toString());
-			}
-		}
 		return b.toString();
 	}	
 }
