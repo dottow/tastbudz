@@ -7,20 +7,17 @@ import org.hibernate.Criteria;
 import org.hibernate.LockOptions;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Example;
-import org.hibernate.exception.SQLGrammarException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.tastbudz.dao.GenericDAO;
-import com.tastbudz.model.PersistentEntity;
+import com.tastbudz.model.Entity;
 import com.tastbudz.model.id.ID;
 
 @Repository
-public abstract class GenericHibernateDAO<T extends PersistentEntity, PK extends ID> implements GenericDAO<T, PK> {
+public abstract class GenericHibernateDAO<T extends Entity, PK extends ID> implements GenericDAO<T, PK> {
 	private Class<T> persistentClass;
 	@Autowired
 	protected SessionFactory sessionFactory;
@@ -60,4 +57,14 @@ public abstract class GenericHibernateDAO<T extends PersistentEntity, PK extends
     public void delete(T entity) {
     	sessionFactory.getCurrentSession().delete(entity);
     }
+    
+	@SuppressWarnings("unchecked")
+	public List<T> getByExample(T exampleInstance) {
+		exampleInstance = (T)exampleInstance.makeQueryCriteria();
+		Criteria crit = sessionFactory.getCurrentSession().createCriteria(getPersistentClass());
+		Example example =  Example.create(exampleInstance);
+		crit.add(example);
+		return crit.list();
+	}
+
 }

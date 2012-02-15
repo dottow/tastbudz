@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -22,10 +23,10 @@ import com.tastbudz.model.id.ID;
 public final class Location implements Serializable {
 	private static final long serialVersionUID = 3182669251691316155L;
 	@Id
-	@Type(type="com.tastbudz.dao.hibernate.usertype.IDUserType")
+	@Type(type="ID")
     @Column(name="restaurant_id", nullable=false)
     private ID restaurantId;
-    @ElementCollection
+    @ElementCollection(fetch=FetchType.EAGER)
 	@Column(name="street_address")
 	private List<String> streetAddressList;
 	@Column(name="cross_street")
@@ -107,8 +108,6 @@ public final class Location implements Serializable {
 	@Override
 	public String toString() {
 		StringBuffer b = new StringBuffer();
-		//b.append(super.toString());
-		//b.append("\n");
 		String address = getAddress();
 		if (!StringUtils.isBlank(address)) {
 			b.append(address);
@@ -117,8 +116,10 @@ public final class Location implements Serializable {
 		b.append(city);
 		b.append(", ");
 		b.append(stateCode);
-		b.append(" ");
-		b.append(postalCode);
+		if (!StringUtils.isBlank(postalCode)) {
+			b.append(" ");
+			b.append(postalCode);
+		}
 		return b.toString();
 	}	
 }

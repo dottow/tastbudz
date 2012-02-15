@@ -1,4 +1,4 @@
-package com.tastbudz.internal.data;
+package com.tastbudz.internal.console;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -15,7 +15,7 @@ import com.tastbudz.model.id.ID;
 
 public class IDUserType implements UserType {
 
-	private static final String CAST_EXCEPTION_TEXT = " cannot be cast to a java.util.ID.";
+	private static final String CAST_EXCEPTION_TEXT = " cannot be cast to a com.tastbudz.model.id.ID.";
 
 	public Object assemble(Serializable cached, Object owner)
 			throws HibernateException {

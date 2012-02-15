@@ -17,10 +17,11 @@ import com.tastbudz.model.id.IDFactory;
 
 @MappedSuperclass
 public abstract class PersistentEntity implements Entity, Cloneable {
-    private static final Logger LOG = Logger.getLogger(PersistentEntity.class);
+ 	private static final long serialVersionUID = -1574940939382693401L;
+	private static final Logger LOG = Logger.getLogger(PersistentEntity.class);
 
 	@Id
-	@Type(type="com.tastbudz.dao.hibernate.usertype.IDUserType")
+	@Type(type="ID")
 	@Column(name="id", nullable=false)
 	private ID id;
 	@Version

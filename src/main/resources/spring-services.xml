@@ -18,6 +18,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   <bean id="serviceLocator" class="com.tastbudz.service.ServiceLocator"/>
   <bean id="staticDataService" class="com.tastbudz.service.impl.StaticDataServiceImpl"/>
   <bean id="restaurantService" class="com.tastbudz.service.impl.RestaurantServiceImpl"/>
+  <bean id="menuService" class="com.tastbudz.service.impl.MenuServiceImpl"/>
   
 </beans>
 

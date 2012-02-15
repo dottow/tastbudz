@@ -1,4 +1,4 @@
-package com.tastbudz.internal.data;
+package com.tastbudz.internal.console;
 
 import java.util.HashSet;
 import java.util.List;
@@ -8,31 +8,12 @@ import com.tastbudz.model.Cuisine;
 import com.tastbudz.service.ServiceLocator;
 import com.tastbudz.service.StaticDataService;
 
-public class CuisineConsole implements Runnable {
-	private Console console;
-	
+public class CuisineConsole extends AbstractCRUDConsole<Cuisine> {
 	public CuisineConsole(Console console) {
-		this.console = console;
-	}
-	
-	public void run() {
-		console.printf("Cuisine console\n\n");
-		
-		String input="";
-		while (!(input.equals("quit"))) {
-			console.printf("? ");
-			input = console.readLine();
-			input = input.trim();
-			if ("list".equalsIgnoreCase(input)) {
-				readCuisines();
-			}
-			else if ("save".equalsIgnoreCase(input)) {
-				saveCuisines();
-			} 
-		}
+		super(console);
 	}
 
-	private void saveCuisines() {
+	public void create() {
 		StaticDataService service = ServiceLocator.getInstance()
 				.getStaticDataService();
 		Set<Cuisine> cuisines = createCuisines();
@@ -41,7 +22,7 @@ public class CuisineConsole implements Runnable {
 		}
 	}
 
-	private void readCuisines() {
+	public void read() {
 		List<Cuisine> cuisines = ServiceLocator.getInstance()
 				.getStaticDataService().getCuisines();
 		for (Cuisine cuisine : cuisines) {
@@ -49,6 +30,14 @@ public class CuisineConsole implements Runnable {
 		}
 	}
 
+	public void update() {
+		//TODO
+	}
+	
+	public void delete() {
+		//TODO
+	}
+	
 	private static Set<Cuisine> createCuisines() {
 		Set<String> types = getCuisineTypes();
 		Set<Cuisine> cuisines = new HashSet<Cuisine>();

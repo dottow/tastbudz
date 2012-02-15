@@ -17,6 +17,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   <bean id="restaurantDAO" class="com.tastbudz.dao.hibernate.RestaurantDAOHibernate"/>
   <bean id="cuisineDAO" class="com.tastbudz.dao.hibernate.CuisineDAOHibernate"/>
   <bean id="coordinatesDAO" class="com.tastbudz.dao.hibernate.CoordinatesDAOHibernate"/>
+  <bean id="dishDAO" class="com.tastbudz.dao.hibernate.DishDAOHibernate"/>
+  <bean id="drinkDAO" class="com.tastbudz.dao.hibernate.DrinkDAOHibernate"/>
   
 </beans>
 

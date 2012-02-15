@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -18,14 +19,14 @@ public class Restaurant extends PersistentEntity {
 	private static final long serialVersionUID = -6982827718579490636L;
 	@Column(name="name", nullable=false)
 	private String name;
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
     @PrimaryKeyJoinColumn
     private Location location;
 	@Column(name="url", nullable=true)
 	private String url;
 	@Column(name="phone", nullable=true)
 	private String phone;
-	@ManyToMany(cascade = CascadeType.PERSIST)
+	@ManyToMany(cascade = CascadeType.PERSIST, fetch=FetchType.EAGER)
 	private Set<Cuisine> cuisines;
 	
 	public Restaurant() {
@@ -70,7 +71,9 @@ public class Restaurant extends PersistentEntity {
 	public void setAddress(String ... address) {
 		location.setAddress(address);
 	}
-	
+	public void setAddress(String address) {
+		location.setAddress(address);
+	}
 	public String getAddress() {
 		return location.getAddress();
 	}
@@ -109,8 +112,6 @@ public class Restaurant extends PersistentEntity {
 	@Override
 	public String toString() {
 		StringBuffer b = new StringBuffer();
-		//b.append(super.toString());
-		b.append("\n");
 		b.append(name);
 		b.append("\n");
 		if (!StringUtils.isBlank(url)) {

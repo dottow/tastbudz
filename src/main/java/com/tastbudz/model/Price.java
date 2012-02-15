@@ -1,9 +1,10 @@
 package com.tastbudz.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Currency;
 
-public final class Price {
+public final class Price implements Serializable {
 	private BigDecimal amount;
 	private Currency currency;
 	

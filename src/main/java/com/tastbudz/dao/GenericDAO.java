@@ -1,12 +1,15 @@
 package com.tastbudz.dao;
 
-import com.tastbudz.model.PersistentEntity;
-import com.tastbudz.model.id.ID;
+import java.util.List;
 
-public interface GenericDAO<T extends PersistentEntity, PK extends ID> {
+import com.tastbudz.model.Entity;
+
+public interface GenericDAO<T extends Entity, ID> {
 	T save(T entity);
 		
 	void delete (T entity);
 	
-    T read(PK id);
+    T read(ID id);
+    
+    List<T> getByExample(T example);
 }

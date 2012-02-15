@@ -10,4 +10,5 @@ public interface Entity extends Serializable {
 	public int getVersion();
     public Date getDateCreated();
     public Date getDateUpdated();
+    public Entity makeQueryCriteria();
 }

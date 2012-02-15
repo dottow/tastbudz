@@ -27,12 +27,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
 	@Transactional(readOnly=true)
 	public List<Restaurant> getRestaurants(Restaurant criteria) {
-		return null; //TODO
-//		List<Restaurant> restaurants = restaurantDAO.findByExample(criteria);
-//		for (Restaurant restaurant : restaurants) {
-//			restaurant.toString();
-//		}
-//		return restaurants;
+		List<Restaurant> restaurants = restaurantDAO.getByExample(criteria);
+		return restaurants;
 	}
-
 }

@@ -32,6 +32,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
     <property name="dataSource" ref="dataSource"/>
     <property name="packagesToScan" value="com.tastbudz.model"/>
+    <property name="annotatedPackages" value="com.tastbudz.model"/>
     <property name="hibernateProperties">
       <value>
         hibernate.dialect=${database.dialect}
@@ -53,6 +54,6 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
     
-  <bean id="console" class="com.tastbudz.internal.data.Console"/>
+  <bean id="console" class="com.tastbudz.internal.console.Console"/>
 </beans>
 

@@ -1,4 +1,4 @@
-package com.tastbudz.internal.data;
+package com.tastbudz.internal.console;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -22,6 +22,7 @@ public class ConsoleServer {
         String input="";
         while (true) {
         	console.printf("[R]estaurant\n");
+        	console.printf("[M]enu\n");
         	console.printf("[C]uisine\n");
         	console.printf("[Q]uit\n");
         	console.printf("\n");
@@ -35,18 +36,23 @@ public class ConsoleServer {
         	else if ("C".equalsIgnoreCase(input)) {
         		runnable = new CuisineConsole(console);
         	}
+        	else if ("M".equalsIgnoreCase(input)) {
+        		runnable = new MenuConsole(console);
+        	}
         	else if ("Q".equalsIgnoreCase(input)) {
         		System.exit(0);
         	}
-        	Thread t = new Thread(runnable);
-        	t.start();
-        	try {
-				t.join();
-			} 
-        	catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+        	if (runnable != null) {
+        		Thread t = new Thread(runnable);
+        		t.start();
+        		try {
+        			t.join();
+        		} 
+        		catch (InterruptedException e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+        	}
         }
 	}
 }
