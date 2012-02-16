@@ -1,5 +1,6 @@
 package com.tastbudz.controller;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -22,12 +23,12 @@ public class RestaurantController {
 	private RestaurantService restaurantService;
 	
 	@RequestMapping(value = "/city/{city}", method = RequestMethod.GET)
-	public @ResponseBody List<Restaurant> getRestaurantsByCity(@PathVariable("city")String city) {
+	public @ResponseBody Map<String, ? extends Object> getRestaurantsByCity(@PathVariable("city")String city) {
 		List<Restaurant> restaurants = restaurantService.getRestaurantsByCity(city);
 		for (Restaurant restaurant : restaurants) {
 			System.out.println(restaurant);
 		}
-		return restaurants;
+		return Collections.singletonMap("restaurants", restaurants);
 	}
 	
 	@RequestMapping("/index")
