@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tastbudz.dao.CuisineDAO;
 import com.tastbudz.model.Cuisine;
-import com.tastbudz.model.id.ID;
+import com.tastbudz.model.ID;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:spring-test.xml")

@@ -14,7 +14,6 @@ import javax.persistence.Table;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Type;
 
-import com.tastbudz.model.id.ID;
 
 
 

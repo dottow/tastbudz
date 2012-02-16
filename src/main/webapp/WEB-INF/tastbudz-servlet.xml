@@ -12,13 +12,13 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
      http://www.springframework.org/schema/aop 
      http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
      http://www.springframework.org/schema/context
-	 http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+     http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	 	 
   <import resource="spring-persistence.xml"/>
   <import resource="spring-services.xml"/>
       
   <bean id="dataSourceProperties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-    <property name="location" value="datasource.${environment}.properties"/>
+    <property name="location" value="/WEB-INF/datasource.properties"/>
   </bean>
         
   <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
@@ -29,9 +29,13 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   </bean>
 
   <context:annotation-config />
+
+  <context:component-scan base-package="com.tastbudz.controller" />
 	
   <tx:annotation-driven />
+
+  <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+  <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
       
-  <bean id="console" class="com.tastbudz.internal.console.Console"/>
 </beans>
 

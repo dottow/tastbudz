@@ -29,29 +29,10 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     <property name="password" value="${database.password}"/>
   </bean>
 
-  <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-    <property name="dataSource" ref="dataSource"/>
-    <property name="packagesToScan" value="com.tastbudz.model"/>
-    <property name="hibernateProperties">
-      <value>
-        hibernate.dialect=${database.dialect}
-        hibernate.hbm2ddl.auto=${hbm2ddl.settings}
-        hibernate.show_sql=true
-        hibernate.connection.pool_size=5
-        hibernate.cache.use_query_cache=false
-        hibernate.cache.use_second_level_cache=false
-	cache.provider_class=org.hibernate.cache.EhCacheProvider
-      </value>
-    </property>
-  </bean>
 
-	<context:annotation-config />
-	
+  <context:annotation-config />
+
   <tx:annotation-driven />
-  
-  <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-    <property name="sessionFactory" ref="sessionFactory"/>
-  </bean>
   
 </beans>
 

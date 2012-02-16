@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.tastbudz.dao.DishDAO;
 import com.tastbudz.model.Dish;
+import com.tastbudz.model.ID;
 import com.tastbudz.model.Restaurant;
-import com.tastbudz.model.id.ID;
 
 public class DishDAOHibernate extends ConsumableDAOHibernate<Dish, ID> implements
 		DishDAO {

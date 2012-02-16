@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import com.tastbudz.dao.ConsumableDAO;
 import com.tastbudz.model.Consumable;
+import com.tastbudz.model.ID;
 import com.tastbudz.model.Restaurant;
-import com.tastbudz.model.id.ID;
 
 @Repository
 public abstract class ConsumableDAOHibernate<T extends Consumable, PK extends ID> extends GenericHibernateDAO<T, PK>

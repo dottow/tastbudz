@@ -6,8 +6,8 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Example;
 
 import com.tastbudz.dao.RestaurantDAO;
+import com.tastbudz.model.ID;
 import com.tastbudz.model.Restaurant;
-import com.tastbudz.model.id.ID;
 
 public class RestaurantDAOHibernate extends GenericHibernateDAO<Restaurant, ID> implements
 		RestaurantDAO {

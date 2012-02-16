@@ -37,7 +37,7 @@ public class RestaurantConsole extends AbstractCRUDConsole<Restaurant> {
 		RestaurantService service = ServiceLocator.getInstance()
 		.getRestaurantService();
 		
-		service.removeRestaurant(restaurant);
+		service.removeRestaurant(restaurant.getId());
 	}
 	
 	private void buildAndSave(Restaurant restaurant) {

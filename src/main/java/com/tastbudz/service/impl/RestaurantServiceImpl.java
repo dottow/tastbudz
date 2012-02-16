@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tastbudz.dao.RestaurantDAO;
+import com.tastbudz.model.ID;
 import com.tastbudz.model.Restaurant;
 import com.tastbudz.service.RestaurantService;
 
@@ -21,13 +22,25 @@ public class RestaurantServiceImpl implements RestaurantService {
 	}
 
 	@Transactional
-	public void removeRestaurant(Restaurant restaurant) {
+	public void removeRestaurant(ID id) {
+		Restaurant restaurant = restaurantDAO.read(id);
 		restaurantDAO.delete(restaurant);
 	}
 
+	@Transactional(readOnly=true) 
+	public Restaurant getRestaurant(ID id) {
+		return restaurantDAO.read(id);
+	}
+	
+	@Transactional(readOnly=true)
+	public List<Restaurant> getRestaurantsByCity(String city) {
+		Restaurant restaurant = new Restaurant();
+		restaurant.setCity(city);
+		return restaurantDAO.getByExample(restaurant);
+	}
+	
 	@Transactional(readOnly=true)
 	public List<Restaurant> getRestaurants(Restaurant criteria) {
-		List<Restaurant> restaurants = restaurantDAO.getByExample(criteria);
-		return restaurants;
+		return restaurantDAO.getByExample(criteria);
 	}
 }

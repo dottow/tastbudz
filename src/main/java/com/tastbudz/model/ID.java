@@ -1,16 +1,22 @@
-package com.tastbudz.model.id;
+package com.tastbudz.model;
 
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.util.UUID;
 
 
 public final class ID implements Serializable {
+	private static final long serialVersionUID = -3177806549263911864L;
 	private byte[] id;
 	
 	
 	public ID() {
-		id = toByteArray(java.util.UUID.randomUUID());
+		id = toByteArray(UUID.randomUUID());
+	}
+	
+	private ID(String s) {
+		id = toByteArray(UUID.fromString(s));
 	}
 	
 	public byte[] getBytes() {
@@ -50,14 +56,18 @@ public final class ID implements Serializable {
 		return id;
 	}
 		
-	private static byte[] toByteArray(java.util.UUID uuid) {
+	public static ID fromString(String s) {
+		return new ID(s);
+	}
+
+	private static byte[] toByteArray(UUID uuid) {
 	    ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
 	    bb.putLong(uuid.getMostSignificantBits()); // order is important here!
 	    bb.putLong(uuid.getLeastSignificantBits());
 	    return bb.array();
 	}
 	
-	private static java.util.UUID toUUID(byte[] byteArray) {
+	private static UUID toUUID(byte[] byteArray) {
 	    long msb = 0;
 	    long lsb = 0;
 	    for (int i = 0; i < 8; i++)

@@ -12,8 +12,6 @@ import javax.persistence.Version;
 import org.hibernate.annotations.Type;
 import org.jboss.logging.Logger;
 
-import com.tastbudz.model.id.ID;
-import com.tastbudz.model.id.IDFactory;
 
 @MappedSuperclass
 public abstract class PersistentEntity implements Entity, Cloneable {
@@ -35,7 +33,7 @@ public abstract class PersistentEntity implements Entity, Cloneable {
     private Date dateUpdated;
     
 	public PersistentEntity() {
-		this.id = IDFactory.createID(this);
+		this.id = new ID();
 		this.version = 0;
 		this.dateCreated = new Date();
 	}

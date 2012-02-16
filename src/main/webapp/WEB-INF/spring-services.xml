@@ -13,25 +13,12 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
      http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
      http://www.springframework.org/schema/context
 	 http://www.springframework.org/schema/context/spring-context-3.0.xsd">
-	 	 
-  <import resource="spring-persistence.xml"/>
-  <import resource="spring-services.xml"/>
-      
-  <bean id="dataSourceProperties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-    <property name="location" value="datasource.${environment}.properties"/>
-  </bean>
         
-  <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-    <property name="driverClassName" value="${database.driver}"/>
-    <property name="url" value="${database.url}"/>
-    <property name="username" value="${database.username}"/>
-    <property name="password" value="${database.password}"/>
-  </bean>
-
-  <context:annotation-config />
-	
-  <tx:annotation-driven />
-      
-  <bean id="console" class="com.tastbudz.internal.console.Console"/>
+  
+  <bean id="serviceLocator" class="com.tastbudz.service.ServiceLocator"/>
+  <bean id="staticDataService" class="com.tastbudz.service.impl.StaticDataServiceImpl"/>
+  <bean id="restaurantService" class="com.tastbudz.service.impl.RestaurantServiceImpl"/>
+  <bean id="menuService" class="com.tastbudz.service.impl.MenuServiceImpl"/>
+  
 </beans>
 
