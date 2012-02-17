@@ -9,6 +9,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonUnwrapped;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hibernate.annotations.Type;
 import org.jboss.logging.Logger;
 
@@ -21,15 +24,19 @@ public abstract class PersistentEntity implements Entity, Cloneable {
 	@Id
 	@Type(type="ID")
 	@Column(name="id", nullable=false)
+	@JsonSerialize(using=com.tastbudz.json.IDJsonSerializer.class)
 	private ID id;
 	@Version
 	@Column(name="version", nullable=false)
+	@JsonIgnore
 	private int version;
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="date_created", nullable=false)
+	@JsonIgnore
     private Date dateCreated;
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="date_updated", nullable=true)
+	@JsonIgnore
     private Date dateUpdated;
     
 	public PersistentEntity() {

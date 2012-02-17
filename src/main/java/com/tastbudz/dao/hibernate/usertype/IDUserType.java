@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Arrays;
 
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
@@ -22,7 +23,7 @@ public class IDUserType implements UserType {
 		if (!byte[].class.isAssignableFrom(cached.getClass())) {
 			return null;
 		}
-		return ID.fromBytes((byte[]) cached);
+		return fromBytes(Arrays.copyOf((byte[])cached, 16));
 	}
 
 	public Object deepCopy(Object value) throws HibernateException {
@@ -30,7 +31,7 @@ public class IDUserType implements UserType {
 	}
 
 	public Serializable disassemble(Object value) throws HibernateException {
-		return ((ID) value).getBytes();
+		return toBytes((ID) value);
 	}
 
 	public boolean equals(Object x, Object y) throws HibernateException {
@@ -67,7 +68,7 @@ public class IDUserType implements UserType {
 			SessionImplementor session, Object owner)
 			throws HibernateException, SQLException {
 		byte[] value = rs.getBytes(names[0]);
-		return (value == null) ? null : ID.fromBytes(value);
+		return (value == null) ? null : fromBytes(value);
 	}
 
 	public void nullSafeSet(PreparedStatement st, Object value, int index, SessionImplementor session)
@@ -81,7 +82,7 @@ public class IDUserType implements UserType {
 			throw new HibernateException(value.getClass().toString()
 					+ CAST_EXCEPTION_TEXT);
 
-		st.setBytes(index, (((ID) value).getBytes()));
+		st.setBytes(index, toBytes((ID) value));
 	}
 
 	public Object replace(Object original, Object target, Object owner)
@@ -95,6 +96,14 @@ public class IDUserType implements UserType {
 	}
 
 	public int[] sqlTypes() {
-		return new int[] { Types.BINARY };
+		return new int[] { Types.VARBINARY };
+	}
+	
+	private byte[] toBytes(ID id) {
+		return id.getBytes();
+	}
+	
+	private ID fromBytes(byte[] bytes) {
+		return ID.fromBytes(Arrays.copyOf(bytes, 16));	
 	}
 }

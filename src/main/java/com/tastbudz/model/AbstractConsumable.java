@@ -5,6 +5,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Columns;
 import org.hibernate.annotations.Type;
 
@@ -14,6 +15,7 @@ public class AbstractConsumable extends PersistentEntity implements Consumable {
 	private static final long serialVersionUID = -5383254921855270579L;
 	@ManyToOne
 	@JoinColumn(name="restaurant_id", referencedColumnName="id", nullable=false)
+	@JsonIgnore
 	private Restaurant restaurant;
 	@Column(name="name", nullable=false)
 	private String name;

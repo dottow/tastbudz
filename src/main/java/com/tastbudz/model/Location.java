@@ -12,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.hibernate.annotations.Type;
 
 
@@ -19,11 +22,13 @@ import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name="tstbdz_location")
+@JsonSerialize(include = Inclusion.NON_NULL)
 public final class Location implements Serializable {
 	private static final long serialVersionUID = 3182669251691316155L;
 	@Id
 	@Type(type="ID")
     @Column(name="restaurant_id", nullable=false)
+    @JsonIgnore
     private ID restaurantId;
     @ElementCollection(fetch=FetchType.EAGER)
 	@Column(name="street_address")

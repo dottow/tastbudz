@@ -12,15 +12,21 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonUnwrapped;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
 @Entity
 @Table(name="tstbdz_restaurant")
+@JsonSerialize(include = Inclusion.NON_NULL)
 public class Restaurant extends PersistentEntity {
 	private static final long serialVersionUID = -6982827718579490636L;
 	@Column(name="name", nullable=false)
 	private String name;
 	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
     @PrimaryKeyJoinColumn
+    @JsonUnwrapped
     private Location location;
 	@Column(name="url", nullable=true)
 	private String url;
@@ -68,43 +74,55 @@ public class Restaurant extends PersistentEntity {
 		this.cuisines = cuisines;
 	}
 	
+	@JsonIgnore
 	public void setAddress(String ... address) {
 		location.setAddress(address);
 	}
+	@JsonIgnore
 	public void setAddress(String address) {
 		location.setAddress(address);
 	}
+	@JsonIgnore
 	public String getAddress() {
 		return location.getAddress();
 	}
-
+	@JsonIgnore
 	public String getCrossStreet() {
 		return location.getCrossStreet();
 	}
+	@JsonIgnore
 	public void setCrossStreet(String crossStreet) {
 		location.setCrossStreet(crossStreet);
 	}
+	@JsonIgnore
 	public String getCity() {
 		return location.getCity();
 	}
+	@JsonIgnore
 	public void setCity(String city) {
 		location.setCity(city);
 	}
+	@JsonIgnore
 	public String getStateCode() {
 		return location.getStateCode();
 	}
+	@JsonIgnore
 	public void setStateCode(String stateCode) {
 		location.setStateCode(stateCode);
 	}
+	@JsonIgnore
 	public String getPostalCode() {
 		return location.getPostalCode();
 	}
+	@JsonIgnore
 	public void setPostalCode(String postalCode) {
 		location.setPostalCode(postalCode);
 	}
+	@JsonIgnore
 	public String getCountryCode() {
 		return location.getCountryCode();
 	}
+	@JsonIgnore
 	public void setCountryCode(String countryCode) {
 		location.setCountryCode(countryCode);
 	}

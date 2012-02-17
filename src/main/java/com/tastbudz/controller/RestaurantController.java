@@ -25,21 +25,20 @@ public class RestaurantController {
 	@RequestMapping(value = "/city/{city}", method = RequestMethod.GET)
 	public @ResponseBody Map<String, ? extends Object> getRestaurantsByCity(@PathVariable("city")String city) {
 		List<Restaurant> restaurants = restaurantService.getRestaurantsByCity(city);
-		for (Restaurant restaurant : restaurants) {
-			System.out.println(restaurant);
-		}
 		return Collections.singletonMap("restaurants", restaurants);
 	}
-	
-	@RequestMapping("/index")
-	public String listRestaurants(Map<String, Object> map) {
-		return "restaurant";
+		
+	@RequestMapping(value = "/{restaurantId}", method = RequestMethod.GET)
+	public @ResponseBody Restaurant getRestaurant(@PathVariable("restaurantId")String restaurantId) {
+		ID id = ID.fromString(restaurantId);
+		Restaurant restaurant = restaurantService.getRestaurant(id);
+		return restaurant;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST)
-	public String createRestaurant(@ModelAttribute("restaurant")Restaurant restaurant) {
-		restaurantService.saveRestaurant(restaurant);
-		return "redirect:/index";
+	public @ResponseBody Restaurant createRestaurant(@ModelAttribute("restaurant")Restaurant restaurant) {
+		restaurant = restaurantService.saveRestaurant(restaurant);
+		return restaurant;
 	}
 	
 	@RequestMapping(value = "/{restaurantId}", method = RequestMethod.DELETE)
@@ -47,24 +46,5 @@ public class RestaurantController {
 		ID id = ID.fromString(restaurantId);
 		restaurantService.removeRestaurant(id);
 		return "redirect:/index";
-	}
-	
-	/*
-	 * 	@Transactional
-	public Restaurant saveRestaurant(Restaurant restaurant) {
-		return restaurantDAO.save(restaurant);
-	}
-
-	@Transactional
-	public void removeRestaurant(Restaurant restaurant) {
-		restaurantDAO.delete(restaurant);
-	}
-
-	@Transactional(readOnly=true)
-	public List<Restaurant> getRestaurants(Restaurant criteria) {
-		List<Restaurant> restaurants = restaurantDAO.getByExample(criteria);
-		return restaurants;
-	}
-
-	 */
+	}	
 }

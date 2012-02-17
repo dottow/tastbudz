@@ -50,6 +50,15 @@ public final class ID implements Serializable {
 		return toUUID(id).toString();
 	}
 	
+	public String getDetails() {
+		StringBuffer buffer = new StringBuffer();
+		for (byte b : id) {
+			if (buffer.length() > 0) buffer.append(" ");
+			buffer.append(b);
+		}
+		return buffer.toString();
+	}
+	
 	public static ID fromBytes(byte[] b) {
 		ID id = new ID();
 		id.id = b;

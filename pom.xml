@@ -213,6 +213,21 @@
 	<artifactId>mysql-connector-java</artifactId>
 	<version>5.1.6</version>
     </dependency>
+    <dependency>
+        <groupId>org.codehaus.jackson</groupId>
+	<artifactId>jackson-core-lgpl</artifactId>
+	<version>${jackson.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.codehaus.jackson</groupId>
+	<artifactId>jackson-mapper-lgpl</artifactId>
+	<version>${jackson.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.codehaus.jackson</groupId>
+	<artifactId>jackson-xc</artifactId>
+	<version>${jackson.version}</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>tastbudz</finalName>
@@ -236,6 +251,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <hibernate.version>4.0.1.Final</hibernate.version>
     <spring.version>3.1.0.RELEASE</spring.version>
+    <jackson.version>1.9.2</jackson.version>
     <spring-social.version>1.0.2.RELEASE</spring-social.version>
     <spring-social-facebook.version>1.0.1.RELEASE</spring-social-facebook.version>
   </properties>
