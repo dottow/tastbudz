@@ -23,9 +23,9 @@ public class RestaurantController {
 	private RestaurantService restaurantService;
 	
 	@RequestMapping(value = "/city/{city}", method = RequestMethod.GET)
-	public @ResponseBody Map<String, ? extends Object> getRestaurantsByCity(@PathVariable("city")String city) {
+	public @ResponseBody List<? extends Object> getRestaurantsByCity(@PathVariable("city")String city) {
 		List<Restaurant> restaurants = restaurantService.getRestaurantsByCity(city);
-		return Collections.singletonMap("restaurants", restaurants);
+		return restaurants;
 	}
 		
 	@RequestMapping(value = "/{restaurantId}", method = RequestMethod.GET)
