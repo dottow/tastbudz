@@ -16,7 +16,6 @@ import com.tastbudz.dao.GenericDAO;
 import com.tastbudz.model.Entity;
 import com.tastbudz.model.ID;
 
-@Repository
 public abstract class GenericHibernateDAO<T extends Entity, PK extends ID> implements GenericDAO<T, PK> {
 	private Class<T> persistentClass;
 	@Autowired

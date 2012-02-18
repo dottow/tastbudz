@@ -6,36 +6,45 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tastbudz.config.TestConfig;
 import com.tastbudz.dao.CuisineDAO;
 import com.tastbudz.model.Cuisine;
 import com.tastbudz.model.ID;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations="classpath:spring-test.xml")
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class)
 @TransactionConfiguration(transactionManager="transactionManager", defaultRollback = true)
 @Transactional
 public class TestHibernateCuisineDao extends TestCase {
+
+	@Configuration
+	@Import(TestConfig.class)
+	static class ContextConfig {
+		@Bean
+		public CuisineDAO getCuisineDAO() {
+			return new CuisineDAOHibernate();
+		}
+	}
+
 	private static final String INDONESIAN = "Indonesian";
 	private static final String INDIAN = "Indian";
 	private static final String FRENCH = "French";
 	@Autowired
-	private ApplicationContext context;
 	private CuisineDAO dao;
 
-	@Before
-	public void setUp() throws Exception {
-		dao = (CuisineDAO) context.getBean("cuisineDAO");
-	}
 	
 	@Test
 	public void testSaveCusine() {

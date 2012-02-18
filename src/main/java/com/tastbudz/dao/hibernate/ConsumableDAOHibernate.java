@@ -4,14 +4,12 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Example;
-import org.springframework.stereotype.Repository;
 
 import com.tastbudz.dao.ConsumableDAO;
 import com.tastbudz.model.Consumable;
 import com.tastbudz.model.ID;
 import com.tastbudz.model.Restaurant;
 
-@Repository
 public abstract class ConsumableDAOHibernate<T extends Consumable, PK extends ID> extends GenericHibernateDAO<T, PK>
 		implements ConsumableDAO<T, PK> {
 	

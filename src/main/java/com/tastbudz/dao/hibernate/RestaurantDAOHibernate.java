@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Example;
+import org.springframework.stereotype.Repository;
 
 import com.tastbudz.dao.RestaurantDAO;
 import com.tastbudz.model.ID;
 import com.tastbudz.model.Restaurant;
 
+@Repository
 public class RestaurantDAOHibernate extends GenericHibernateDAO<Restaurant, ID> implements
 		RestaurantDAO {
 	

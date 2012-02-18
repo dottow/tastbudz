@@ -4,12 +4,22 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
+
+import com.tastbudz.config.TestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations="classpath:spring-test.xml")
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class)
 public class TestID extends TestCase {
+	@Configuration
+	@Import(TestConfig.class)
+	static class ContextConfig {
+	}
+
 	@Test
 	public void testSaveCusine() {
 		ID id = new ID();

@@ -26,7 +26,7 @@ public class Restaurant extends PersistentEntity {
 	private String name;
 	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
     @PrimaryKeyJoinColumn
-    @JsonUnwrapped
+    @JsonIgnore
     private Location location;
 	@Column(name="url", nullable=true)
 	private String url;
@@ -46,9 +46,11 @@ public class Restaurant extends PersistentEntity {
 		this.name = name;
 	}
 	
+	@JsonIgnore
 	public Location getLocation() {
 		return location;
 	}
+	@JsonIgnore
 	public void setLocation(Location location) {
 		this.location = location;
 		if (location != null) {
@@ -73,7 +75,6 @@ public class Restaurant extends PersistentEntity {
 	public void setCuisines(Set<Cuisine> cuisines) {
 		this.cuisines = cuisines;
 	}
-	
 	@JsonIgnore
 	public void setAddress(String ... address) {
 		location.setAddress(address);
@@ -82,47 +83,36 @@ public class Restaurant extends PersistentEntity {
 	public void setAddress(String address) {
 		location.setAddress(address);
 	}
-	@JsonIgnore
 	public String getAddress() {
 		return location.getAddress();
 	}
-	@JsonIgnore
 	public String getCrossStreet() {
 		return location.getCrossStreet();
 	}
-	@JsonIgnore
 	public void setCrossStreet(String crossStreet) {
 		location.setCrossStreet(crossStreet);
 	}
-	@JsonIgnore
 	public String getCity() {
 		return location.getCity();
 	}
-	@JsonIgnore
 	public void setCity(String city) {
 		location.setCity(city);
 	}
-	@JsonIgnore
 	public String getStateCode() {
 		return location.getStateCode();
 	}
-	@JsonIgnore
 	public void setStateCode(String stateCode) {
 		location.setStateCode(stateCode);
 	}
-	@JsonIgnore
 	public String getPostalCode() {
 		return location.getPostalCode();
 	}
-	@JsonIgnore
 	public void setPostalCode(String postalCode) {
 		location.setPostalCode(postalCode);
 	}
-	@JsonIgnore
 	public String getCountryCode() {
 		return location.getCountryCode();
 	}
-	@JsonIgnore
 	public void setCountryCode(String countryCode) {
 		location.setCountryCode(countryCode);
 	}

@@ -1,13 +1,11 @@
 package com.tastbudz.controller;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,8 +33,11 @@ public class RestaurantController {
 		return restaurant;
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
-	public @ResponseBody Restaurant createRestaurant(@ModelAttribute("restaurant")Restaurant restaurant) {
+	@RequestMapping(method = RequestMethod.POST, consumes="application/json")
+	public @ResponseBody Restaurant createRestaurant(@RequestBody Restaurant restaurant) {
+		System.out.println(restaurant.getName());
+		System.out.println(restaurant.getCity());
+		System.out.println(restaurant.getAddress());
 		restaurant = restaurantService.saveRestaurant(restaurant);
 		return restaurant;
 	}
