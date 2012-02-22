@@ -9,7 +9,7 @@ import com.tastbudz.model.Dish;
 import com.tastbudz.model.ID;
 import com.tastbudz.model.Restaurant;
 
-@Repository
+@Repository("dishDAO")
 public class DishDAOHibernate extends ConsumableDAOHibernate<Dish, ID> implements
 		DishDAO {
 

@@ -1,4 +1,4 @@
-package com.tastbudz.model;
+package com.tastbudz.test.model;
 
 import junit.framework.TestCase;
 
@@ -10,7 +10,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import com.tastbudz.config.TestConfig;
+import com.tastbudz.model.ID;
+import com.tastbudz.test.config.TestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class)

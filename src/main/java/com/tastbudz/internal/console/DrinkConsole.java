@@ -2,16 +2,19 @@ package com.tastbudz.internal.console;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.tastbudz.model.Drink;
 import com.tastbudz.model.Restaurant;
 import com.tastbudz.service.MenuService;
-import com.tastbudz.service.ServiceLocator;
 
 public class DrinkConsole extends AbstractCRUDConsole<Drink> {
+	@Autowired
+	private MenuService menuService;
+
 	private Restaurant restaurant = null;
 	
-	public DrinkConsole(Console console, Restaurant restaurant) {
-		super(console);
+	public DrinkConsole(Restaurant restaurant) {
 		this.restaurant = restaurant;
 	}
 
@@ -39,19 +42,13 @@ public class DrinkConsole extends AbstractCRUDConsole<Drink> {
 		Drink drink = getDish();
 		if (drink == null) return;
 		
-		MenuService service = ServiceLocator.getInstance()
-		.getMenuService();
-		
-		service.removeDrink(drink);
+		menuService.removeDrink(drink);
 	}
 	
 	private void buildAndSave(Drink drink) {
 		ConsoleUtil.buildEntity(console, drink);
 		
-		MenuService service = ServiceLocator.getInstance()
-				.getMenuService();
-
-		drink = service.saveDrink(drink);
+		drink = menuService.saveDrink(drink);
 	}
 	
 	public Drink getDish() {
@@ -61,10 +58,7 @@ public class DrinkConsole extends AbstractCRUDConsole<Drink> {
 
 	
 	public List<Drink> getDrinks() {
-		MenuService service = ServiceLocator.getInstance()
-		.getMenuService();
-		
-		List<Drink> drinks = service.getDrinks(restaurant);
+		List<Drink> drinks = menuService.getDrinks(restaurant);
 		return drinks;
 	}
 }

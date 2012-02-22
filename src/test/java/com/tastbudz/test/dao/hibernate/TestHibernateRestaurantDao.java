@@ -1,4 +1,4 @@
-package com.tastbudz.dao.hibernate;
+package com.tastbudz.test.dao.hibernate;
 
 import java.util.Locale;
 
@@ -18,10 +18,11 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.tastbudz.config.TestConfig;
 import com.tastbudz.dao.RestaurantDAO;
+import com.tastbudz.dao.hibernate.RestaurantDAOHibernate;
 import com.tastbudz.model.Location;
 import com.tastbudz.model.Restaurant;
+import com.tastbudz.test.config.TestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class)

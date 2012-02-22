@@ -1,4 +1,4 @@
-package com.tastbudz.config;
+package com.tastbudz.test.config;
 
 
 import java.util.Properties;

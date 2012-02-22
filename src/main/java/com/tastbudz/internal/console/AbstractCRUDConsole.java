@@ -1,15 +1,14 @@
 package com.tastbudz.internal.console;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.tastbudz.model.PersistentEntity;
 
 
 public abstract class AbstractCRUDConsole<T extends PersistentEntity> implements Runnable {
+	@Autowired
 	protected Console console;
 	
-	public AbstractCRUDConsole(Console console) {
-		this.console = console;
-	}
-
 	public abstract void create();
 	public abstract void read();
 	public abstract void update();

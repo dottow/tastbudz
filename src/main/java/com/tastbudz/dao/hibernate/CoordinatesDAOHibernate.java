@@ -6,7 +6,7 @@ import com.tastbudz.dao.CoordinatesDAO;
 import com.tastbudz.model.Coordinates;
 import com.tastbudz.model.ID;
 
-@Repository
+@Repository("coordinatesDAO")
 public class CoordinatesDAOHibernate extends GenericHibernateDAO<Coordinates, ID> implements
 		CoordinatesDAO {
 	

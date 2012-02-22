@@ -4,18 +4,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.tastbudz.model.Cuisine;
-import com.tastbudz.service.ServiceLocator;
 import com.tastbudz.service.StaticDataService;
 
 public class CuisineConsole extends AbstractCRUDConsole<Cuisine> {
-	public CuisineConsole(Console console) {
-		super(console);
-	}
-
+	@Autowired
+	private StaticDataService service;
+	
 	public void create() {
-		StaticDataService service = ServiceLocator.getInstance()
-				.getStaticDataService();
 		Set<Cuisine> cuisines = createCuisines();
 		for (Cuisine cuisine : cuisines) {
 			cuisine = service.saveCuisine(cuisine);
@@ -23,8 +21,7 @@ public class CuisineConsole extends AbstractCRUDConsole<Cuisine> {
 	}
 
 	public void read() {
-		List<Cuisine> cuisines = ServiceLocator.getInstance()
-				.getStaticDataService().getCuisines();
+		List<Cuisine> cuisines = service.getCuisines();
 		for (Cuisine cuisine : cuisines) {
 			System.out.println(cuisine);
 		}

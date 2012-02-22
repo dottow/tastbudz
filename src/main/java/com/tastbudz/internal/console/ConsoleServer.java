@@ -1,23 +1,24 @@
 package com.tastbudz.internal.console;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import com.tastbudz.service.ServiceLocator;
+import com.tastbudz.config.StandaloneConfig;
 
 
 public class ConsoleServer {
 	public static void main(String[] args) {
-        Console console = new Console();
+		ApplicationContext context = new AnnotationConfigApplicationContext(StandaloneConfig.class);
+
+		Console console = context.getBean(Console.class);
 		String environment = System.getProperty("environment");
 		if (environment == null) {
 			console.printf("environment property must be specified on command line!\n");
 			System.exit(-1);
 		}
 		console.printf("Starting Tastbudz Console on environment: %s\n", environment);
-        String configName = "spring-tastbudz.xml";
-        ApplicationContext context = new ClassPathXmlApplicationContext(configName);
-        ServiceLocator.initialize(context);
+
+
 
         String input="";
         while (true) {
@@ -31,13 +32,13 @@ public class ConsoleServer {
         
         	Runnable runnable = null;
         	if ("R".equalsIgnoreCase(input)) {
-        		runnable = new RestaurantConsole(console);
+        		runnable = context.getBean(RestaurantConsole.class);
         	}
         	else if ("C".equalsIgnoreCase(input)) {
-        		runnable = new CuisineConsole(console);
+        		runnable = context.getBean(CuisineConsole.class);
         	}
         	else if ("M".equalsIgnoreCase(input)) {
-        		runnable = new MenuConsole(console);
+        		runnable = context.getBean(MenuConsole.class);
         	}
         	else if ("Q".equalsIgnoreCase(input)) {
         		System.exit(0);

@@ -1,4 +1,4 @@
-package com.tastbudz.dao.hibernate;
+package com.tastbudz.test.dao.hibernate;
 
 import java.util.HashSet;
 import java.util.List;
@@ -19,10 +19,11 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.tastbudz.config.TestConfig;
 import com.tastbudz.dao.CuisineDAO;
+import com.tastbudz.dao.hibernate.CuisineDAOHibernate;
 import com.tastbudz.model.Cuisine;
 import com.tastbudz.model.ID;
+import com.tastbudz.test.config.TestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class)

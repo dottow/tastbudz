@@ -19,7 +19,7 @@ import org.springframework.transaction.support.ResourceTransactionManager;
 
 @Configuration
 @ImportResource("classpath:/com/tastbudz/datasource.xml")
-@ComponentScan("com.tastbudz")
+@ComponentScan({"com.tastbudz.model","com.tastbudz.dao","com.tastbudz.service"})
 @EnableTransactionManagement
 public class AppConfig {
 	private @Value("${database.url}") String url;
@@ -66,7 +66,7 @@ public class AppConfig {
         return factoryBean.getObject();
 	}	
 	
-	@Bean
+	@Bean(name="transactionManager")
 	public ResourceTransactionManager getTransactionManager() {
 		return new HibernateTransactionManager(getSessionFactory());
 	}

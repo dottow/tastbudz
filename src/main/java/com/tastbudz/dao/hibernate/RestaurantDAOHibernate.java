@@ -10,7 +10,7 @@ import com.tastbudz.dao.RestaurantDAO;
 import com.tastbudz.model.ID;
 import com.tastbudz.model.Restaurant;
 
-@Repository
+@Repository("restaurantDAO")
 public class RestaurantDAOHibernate extends GenericHibernateDAO<Restaurant, ID> implements
 		RestaurantDAO {
 	

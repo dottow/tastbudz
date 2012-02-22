@@ -2,16 +2,20 @@ package com.tastbudz.internal.console;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.tastbudz.model.Dish;
 import com.tastbudz.model.Restaurant;
 import com.tastbudz.service.MenuService;
-import com.tastbudz.service.ServiceLocator;
 
 public class DishConsole extends AbstractCRUDConsole<Dish> {
+	@Autowired
+	private MenuService menuService;
+	
 	private Restaurant restaurant = null;
 	
-	public DishConsole(Console console, Restaurant restaurant) {
-		super(console);
+	public DishConsole(Restaurant restaurant) {
+		super();
 		this.restaurant = restaurant;
 	}
 
@@ -39,19 +43,13 @@ public class DishConsole extends AbstractCRUDConsole<Dish> {
 		Dish dish = getDish();
 		if (dish == null) return;
 		
-		MenuService service = ServiceLocator.getInstance()
-		.getMenuService();
-		
-		service.removeDish(dish);
+		menuService.removeDish(dish);
 	}
 	
 	private void buildAndSave(Dish dish) {
 		ConsoleUtil.buildEntity(console, dish);
 		
-		MenuService service = ServiceLocator.getInstance()
-				.getMenuService();
-
-		dish = service.saveDish(dish);
+		dish = menuService.saveDish(dish);
 	}
 	
 	public Dish getDish() {
@@ -61,10 +59,7 @@ public class DishConsole extends AbstractCRUDConsole<Dish> {
 
 	
 	public List<Dish> getDishes() {
-		MenuService service = ServiceLocator.getInstance()
-		.getMenuService();
-		
-		List<Dish> dishes = service.getDishes(restaurant);
+		List<Dish> dishes = menuService.getDishes(restaurant);
 		return dishes;
 	}
 }

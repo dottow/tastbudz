@@ -39,7 +39,7 @@ public class MvcConfig {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.getSerializationConfig().setAnnotationIntrospector(getAnnotationIntrospector());
 		mapper.getDeserializationConfig().setAnnotationIntrospector(getAnnotationIntrospector());
-		mapper.getSerializationConfig().enable(SerializationConfig.Feature.INDENT_OUTPUT);
+		mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
 		return mapper;
 	}
 }

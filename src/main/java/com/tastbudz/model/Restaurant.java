@@ -13,20 +13,20 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonUnwrapped;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
+import com.tastbudz.json.RestaurantSerializer;
+
 @Entity
 @Table(name="tstbdz_restaurant")
-@JsonSerialize(include = Inclusion.NON_NULL)
+@JsonSerialize(using=RestaurantSerializer.class, include = Inclusion.NON_NULL)
 public class Restaurant extends PersistentEntity {
 	private static final long serialVersionUID = -6982827718579490636L;
 	@Column(name="name", nullable=false)
 	private String name;
 	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
     @PrimaryKeyJoinColumn
-    @JsonIgnore
     private Location location;
 	@Column(name="url", nullable=true)
 	private String url;
@@ -46,11 +46,9 @@ public class Restaurant extends PersistentEntity {
 		this.name = name;
 	}
 	
-	@JsonIgnore
 	public Location getLocation() {
 		return location;
 	}
-	@JsonIgnore
 	public void setLocation(Location location) {
 		this.location = location;
 		if (location != null) {
@@ -75,11 +73,9 @@ public class Restaurant extends PersistentEntity {
 	public void setCuisines(Set<Cuisine> cuisines) {
 		this.cuisines = cuisines;
 	}
-	@JsonIgnore
 	public void setAddress(String ... address) {
 		location.setAddress(address);
 	}
-	@JsonIgnore
 	public void setAddress(String address) {
 		location.setAddress(address);
 	}

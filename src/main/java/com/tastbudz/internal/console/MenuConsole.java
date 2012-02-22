@@ -1,20 +1,16 @@
 package com.tastbudz.internal.console;
 
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.tastbudz.model.Dish;
-import com.tastbudz.model.Drink;
 import com.tastbudz.model.Restaurant;
-import com.tastbudz.service.MenuService;
-import com.tastbudz.service.ServiceLocator;
+import com.tastbudz.service.RestaurantService;
 
 public class MenuConsole implements Runnable {
+	@Autowired
+	private RestaurantService restaurantService;
+	@Autowired
 	protected Console console;
 	protected Restaurant restaurant=null;
-
-	public MenuConsole(Console console) {
-		this.console = console;
-	}
 
 	public void run() {
 		console.printf("Menu console\n\n");
@@ -57,7 +53,7 @@ public class MenuConsole implements Runnable {
 	}
 
 	public void restaurant() {
-		restaurant = RestaurantUtil.getRestaurant(console);
+		restaurant = RestaurantUtil.getRestaurant(restaurantService, console);
 	}
 		
 	public void eats() {
@@ -66,7 +62,7 @@ public class MenuConsole implements Runnable {
 			return;
 		}
 
-		DishConsole dishConsole = new DishConsole(console, restaurant);
+		DishConsole dishConsole = new DishConsole(restaurant);
 		dishConsole.run();
 	}
 	
@@ -76,7 +72,7 @@ public class MenuConsole implements Runnable {
 			return;
 		}
 
-		DrinkConsole drinkConsole = new DrinkConsole(console, restaurant);
+		DrinkConsole drinkConsole = new DrinkConsole(restaurant);
 		drinkConsole.run();		
 	}
 }
