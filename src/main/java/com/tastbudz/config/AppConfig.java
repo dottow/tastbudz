@@ -39,7 +39,7 @@ public class AppConfig {
         return ds;
     }
 	
-	@Bean
+	@Bean(name="sessionFactory")
 	public SessionFactory getSessionFactory() {
 		LocalSessionFactoryBean factoryBean = null;
 		try {

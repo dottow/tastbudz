@@ -1,4 +1,4 @@
-package com.tastbudz.test.dao.hibernate;
+package com.tastbudz.test.service;
 
 import java.util.Locale;
 
@@ -7,59 +7,71 @@ import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.tastbudz.dao.RestaurantDAO;
-import com.tastbudz.dao.hibernate.RestaurantDAOHibernate;
 import com.tastbudz.model.Location;
 import com.tastbudz.model.Restaurant;
+import com.tastbudz.service.RestaurantService;
 import com.tastbudz.test.config.TestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class)
 @TransactionConfiguration(transactionManager="transactionManager", defaultRollback = true)
 @Transactional
-public class TestHibernateRestaurantDao extends TestCase {
+public class TestRestaurantService extends TestCase {
 	@Configuration
 	@Import(TestConfig.class)
-	static class ContextConfig {}
+	static class ContextConfig {
+	}
 
 	
 	private static final String US = Locale.US.getCountry();
 	private static final String CA = "CA";
 	@Autowired
-	private RestaurantDAO dao;
+	private RestaurantService service;
 	
 	@Test
-	public void testSaveLocation() {
+	public void testSaveRestaurant() {
 		Restaurant restaurant = create54Mint();
-		Restaurant retval = dao.save(restaurant);
+		Restaurant retval = service.createRestaurant(restaurant);
 		//the value returned by the DAO must be equal to
 		//the original vale
-		assertEquals("The DAO's returned value of saving"+
+		assertEquals("The Restaurant's returned value of saving"+
                 "must be equal to original", restaurant, retval);
-		//look inside the database through direct Hibernate
-		//the session is auto-commit, so we are sure that the
-		//transaction is committed, the session is flushed
-		//after each operation
-		Restaurant actualRestaurant = dao.read(retval.getId());
+
+		Restaurant actualRestaurant = service.readRestaurant(retval.getId());
 
 		//the actual Student object in the database must be
 		//equal to the original value
-		assertEquals("Actual Location and DAO's returned "+
-	                    "Location must be equal",
+		assertEquals("Actual Restaurant and service's returned "+
+	                    "restaurant must be equal",
 	                     restaurant, actualRestaurant);
 	}
 
+	@Test
+	public void testSaveExistingRestaurant() {
+		Restaurant restaurant = create54Mint();
+		service.createRestaurant(restaurant);
+		
+		Restaurant duplicate = create54Mint();
+		duplicate = service.createRestaurant(duplicate);
+		
+		assertEquals("Saving of duplicate restaurant should return original", restaurant, duplicate);
+		
+		duplicate.setCrossStreet(null);
+		duplicate.setAddress("");
+		duplicate.setPostalCode(null);
+		
+		duplicate = service.createRestaurant(duplicate);
+		
+		assertEquals("Saving of incomplete restaurant data should return original", restaurant, duplicate);
+	}
 	
 	private Restaurant create54Mint() {
 		Restaurant restaurant = new Restaurant();

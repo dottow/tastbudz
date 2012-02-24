@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.tastbudz.model.Dish;
 import com.tastbudz.model.Drink;
+import com.tastbudz.model.Menu;
 import com.tastbudz.model.Restaurant;
 
 public interface MenuService {
@@ -15,5 +16,5 @@ public interface MenuService {
     public void removeDrink(Drink drink);
 	public List<Drink> getDrinks(Restaurant restaurant);
 	public List<Drink> getDrinks(Drink criteria);
-	
+	public Menu getMenu(Restaurant restaurant);
 }

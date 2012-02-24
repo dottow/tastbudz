@@ -9,18 +9,15 @@ import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tastbudz.dao.CuisineDAO;
-import com.tastbudz.dao.hibernate.CuisineDAOHibernate;
 import com.tastbudz.model.Cuisine;
 import com.tastbudz.model.ID;
 import com.tastbudz.test.config.TestConfig;
@@ -33,14 +30,8 @@ public class TestHibernateCuisineDao extends TestCase {
 
 	@Configuration
 	@Import(TestConfig.class)
-	static class ContextConfig {
-		@Bean
-		public CuisineDAO getCuisineDAO() {
-			return new CuisineDAOHibernate();
-		}
-	}
+	static class ContextConfig {}
 
-	private static final String INDONESIAN = "Indonesian";
 	private static final String INDIAN = "Indian";
 	private static final String FRENCH = "French";
 	@Autowired

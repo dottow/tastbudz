@@ -5,7 +5,13 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.UUID;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
+import com.tastbudz.json.IDSerializer;
+
+
+@JsonSerialize(using=IDSerializer.class, include = Inclusion.NON_NULL)
 public final class ID implements Serializable {
 	private static final long serialVersionUID = -3177806549263911864L;
 	private byte[] id;

@@ -14,7 +14,7 @@ import org.jboss.logging.Logger;
 
 
 @MappedSuperclass
-public abstract class PersistentEntity implements Entity, Cloneable {
+public abstract class PersistentEntity implements Entity, Cloneable, Comparable {
  	private static final long serialVersionUID = -1574940939382693401L;
 	private static final Logger LOG = Logger.getLogger(PersistentEntity.class);
 

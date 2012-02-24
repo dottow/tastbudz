@@ -1,5 +1,8 @@
 package com.tastbudz.model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -11,16 +14,14 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
-import com.tastbudz.json.RestaurantSerializer;
+import com.tastbudz.json.PropertyListSerializer;
+import com.tastbudz.util.Strings;
 
 @Entity
 @Table(name="tstbdz_restaurant")
-@JsonSerialize(using=RestaurantSerializer.class, include = Inclusion.NON_NULL)
+@JsonSerialize(using=PropertyListSerializer.class)
 public class Restaurant extends PersistentEntity {
 	private static final long serialVersionUID = -6982827718579490636L;
 	@Column(name="name", nullable=false)
@@ -35,6 +36,23 @@ public class Restaurant extends PersistentEntity {
 	@ManyToMany(cascade = CascadeType.PERSIST, fetch=FetchType.EAGER)
 	private Set<Cuisine> cuisines;
 	
+	private static List<String> propertyOrdering;
+	
+	static {
+		propertyOrdering = new ArrayList<String>();
+		propertyOrdering.add("id");
+		propertyOrdering.add("name");
+		propertyOrdering.add("url");
+		propertyOrdering.add("phone");
+		propertyOrdering.add("address");
+		propertyOrdering.add("city");
+		propertyOrdering.add("stateCode");
+		propertyOrdering.add("postalCode");
+		propertyOrdering.add("countryCode");
+		propertyOrdering.add("cuisines");
+	}
+	
+
 	public Restaurant() {
 		setLocation(new Location());
 	}
@@ -68,6 +86,7 @@ public class Restaurant extends PersistentEntity {
 		this.phone = phone;
 	}
 	public Set<Cuisine> getCuisines() {
+		if (cuisines == null) cuisines = new HashSet<Cuisine>();
 		return cuisines;
 	}
 	public void setCuisines(Set<Cuisine> cuisines) {
@@ -118,15 +137,39 @@ public class Restaurant extends PersistentEntity {
 		StringBuffer b = new StringBuffer();
 		b.append(name);
 		b.append("\n");
-		if (!StringUtils.isBlank(url)) {
+		if (!Strings.isEmpty(url)) {
 			b.append(url);
 			b.append("\n");
 		}
-		if (!StringUtils.isBlank(phone)) {
+		if (!Strings.isEmpty(phone)) {
 			b.append(phone);
 			b.append("\n");
 		}
 		b.append(location.toString());
 		return b.toString();
+	}
+
+	public int compareTo(Object o) {
+		if (o instanceof Restaurant) {
+			Restaurant other = (Restaurant)o;
+			
+			int i = Strings.compare(name, other.name);
+			if (i != 0) return i;
+			
+			return location.compareTo(other.location);
+		}
+		return -1;
+	}
+	
+	public void merge(Restaurant restaurant) {
+		setLocation(restaurant.getLocation());
+		setUrl(restaurant.getUrl());
+		setPhone(restaurant.getPhone());
+		setCuisines(restaurant.getCuisines());
+	}
+
+	@Override
+	public List<String> getPropertyNames() {
+		return propertyOrdering;
 	}
 }

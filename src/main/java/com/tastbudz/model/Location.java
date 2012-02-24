@@ -11,24 +11,20 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.hibernate.annotations.Type;
+
+import com.tastbudz.util.Strings;
 
 
 
 
 @Entity
 @Table(name="tstbdz_location")
-@JsonSerialize(include = Inclusion.NON_NULL)
-public final class Location implements Serializable {
+public final class Location implements Serializable, Comparable {
 	private static final long serialVersionUID = 3182669251691316155L;
 	@Id
 	@Type(type="ID")
     @Column(name="restaurant_id", nullable=false)
-    @JsonIgnore
     private ID restaurantId;
     @ElementCollection(fetch=FetchType.EAGER)
 	@Column(name="street_address")
@@ -113,17 +109,45 @@ public final class Location implements Serializable {
 	public String toString() {
 		StringBuffer b = new StringBuffer();
 		String address = getAddress();
-		if (!StringUtils.isBlank(address)) {
+		if (!Strings.isEmpty(address)) {
 			b.append(address);
 			b.append("\n");
 		}
 		b.append(city);
 		b.append(", ");
 		b.append(stateCode);
-		if (!StringUtils.isBlank(postalCode)) {
+		if (!Strings.isEmpty(postalCode)) {
 			b.append(" ");
 			b.append(postalCode);
 		}
 		return b.toString();
+	}
+
+	public int compareTo(Object o) {
+		if (o instanceof Location) {
+			Location other = (Location)o;
+			int i = Strings.compare(countryCode, other.countryCode);
+			if (i != 0) return i;
+			
+			i = Strings.compare(stateCode, other.stateCode);
+			if (i != 0) return i;
+
+			i = Strings.compareWithNullMatch(postalCode, other.postalCode);
+			if (i != 0) return i;
+						
+			i = Strings.compareWithNullMatch(crossStreet, other.crossStreet);
+			if (i != 0) return i;
+			
+			i = streetAddressList.size() - other.streetAddressList.size();
+			if (i != 0) return i;
+			
+			int index=0;
+			for (String address : streetAddressList) {
+				i = Strings.compare(address, other.streetAddressList.get(index++));
+				if (i != 0) return i;
+			}
+			return 0;
+		}
+		return -1;
 	}	
 }

@@ -17,6 +17,19 @@ import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.support.ResourceTransactionManager;
 
+import com.tastbudz.dao.CuisineDAO;
+import com.tastbudz.dao.DishDAO;
+import com.tastbudz.dao.DrinkDAO;
+import com.tastbudz.dao.RestaurantDAO;
+import com.tastbudz.dao.hibernate.CuisineDAOHibernate;
+import com.tastbudz.dao.hibernate.DishDAOHibernate;
+import com.tastbudz.dao.hibernate.DrinkDAOHibernate;
+import com.tastbudz.dao.hibernate.RestaurantDAOHibernate;
+import com.tastbudz.service.MenuService;
+import com.tastbudz.service.RestaurantService;
+import com.tastbudz.service.impl.MenuServiceImpl;
+import com.tastbudz.service.impl.RestaurantServiceImpl;
+
 @Configuration
 @ImportResource("classpath:/com/tastbudz/test-datasource.xml")
 @ComponentScan("com.tastbudz.model,com.tastbudz.service,com.tastbudz.dao")
@@ -70,4 +83,35 @@ public class TestConfig {
 	public ResourceTransactionManager getTransactionManager() {
 		return new HibernateTransactionManager(getSessionFactory());
 	}
+	
+	@Bean
+	public RestaurantService getRestaurantService() {
+		return new RestaurantServiceImpl();
+	}
+	@Bean
+	public MenuService getMenuService() {
+		return new MenuServiceImpl();
+	}
+	
+	/**
+	 * DAO beans
+	 */
+
+	@Bean
+	public RestaurantDAO getRestaurantDAO() {
+		return new RestaurantDAOHibernate();
+	}
+	@Bean
+	public CuisineDAO getCuisineDAO() {
+		return new CuisineDAOHibernate();
+	}
+	@Bean
+	public DishDAO getDishDAO() {
+		return new DishDAOHibernate();
+	}
+	@Bean
+	public DrinkDAO getDrinkDAO() {
+		return new DrinkDAOHibernate();
+	}
+
 }

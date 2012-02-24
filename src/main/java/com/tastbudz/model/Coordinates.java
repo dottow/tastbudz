@@ -1,5 +1,8 @@
 package com.tastbudz.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +22,14 @@ public final class Coordinates extends PersistentEntity {
 	@JoinColumn(name="location_id", nullable=false)
 	private Location location;
 			
+	private static List<String> propertyOrdering;
+	
+	static {
+		propertyOrdering = new ArrayList<String>();
+		propertyOrdering.add("longitude");
+		propertyOrdering.add("latitude");
+	}
+	
 	public double getLongitude() {
 		return longitude;
 	}
@@ -47,5 +58,17 @@ public final class Coordinates extends PersistentEntity {
 		b.append(", ");
 		b.append(longitude);
 		return b.toString();
+	}
+	
+	public int compareTo(Object o) {
+		if (o instanceof Coordinates) {
+			Coordinates other = (Coordinates)o;
+			return location.compareTo(other.location);
+		}
+		return -1;
+	}
+	
+	public List<String> getPropertyNames() {
+		return propertyOrdering;
 	}
 }

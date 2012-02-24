@@ -34,8 +34,8 @@ primary key (id));
 
 
 create table tstbdz_drink (
-    id binary(3) not null, 
-    restaurant_id binary(3) not null, 
+    id binary(16) not null, 
+    restaurant_id binary(16) not null, 
     date_created timestamp not null, 
     date_updated timestamp, 
     version integer not null, 
