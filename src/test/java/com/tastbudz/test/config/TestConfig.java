@@ -21,10 +21,12 @@ import com.tastbudz.dao.CuisineDAO;
 import com.tastbudz.dao.DishDAO;
 import com.tastbudz.dao.DrinkDAO;
 import com.tastbudz.dao.RestaurantDAO;
+import com.tastbudz.dao.UserDAO;
 import com.tastbudz.dao.hibernate.CuisineDAOHibernate;
 import com.tastbudz.dao.hibernate.DishDAOHibernate;
 import com.tastbudz.dao.hibernate.DrinkDAOHibernate;
 import com.tastbudz.dao.hibernate.RestaurantDAOHibernate;
+import com.tastbudz.dao.hibernate.UserDAOHibernate;
 import com.tastbudz.service.MenuService;
 import com.tastbudz.service.RestaurantService;
 import com.tastbudz.service.impl.MenuServiceImpl;
@@ -97,6 +99,10 @@ public class TestConfig {
 	 * DAO beans
 	 */
 
+	@Bean
+	public UserDAO getUserDAO() {
+		return new UserDAOHibernate();
+	}
 	@Bean
 	public RestaurantDAO getRestaurantDAO() {
 		return new RestaurantDAOHibernate();

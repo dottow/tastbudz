@@ -7,6 +7,10 @@ public class RestaurantException extends TastbudzException {
 
 	private Restaurant restaurant;
 	
+	public RestaurantException() {
+		this(null);
+	}
+	
 	public RestaurantException(Restaurant restaurant) {
 		setRestaurant(restaurant);
 	}

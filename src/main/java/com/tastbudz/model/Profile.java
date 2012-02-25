@@ -1,26 +1,41 @@
 package com.tastbudz.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
+
+
+@Entity
+@Table(name="tstbdz_profile")
 public class Profile implements Viewable {
-	private User user;
-	private String fullName;
-	private Image photo;
+	@Id
+	@Type(type="ID")
+    @Column(name="user_id", nullable=false)
+    private ID userId;
+	@Column(name="first_name")
+	private String firstName;
+	@Column(name="last_name")
+	private String lastName;
 	
-	public User getUser() {
-		return user;
+	public ID getUserId() {
+		return userId;
 	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setUserId(ID userId) {
+		this.userId = userId;
 	}
-	public String getFullName() {
-		return fullName;
+	public String getFirstName() {
+		return firstName;
 	}
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
-	public Image getPhoto() {
-		return photo;
+	public String getLastName() {
+		return lastName;
 	}
-	public void setPhoto(Image photo) {
-		this.photo = photo;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 }
