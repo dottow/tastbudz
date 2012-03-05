@@ -50,6 +50,7 @@
   <classpathentry kind="var" path="M2_REPO/org/springframework/security/spring-security-web/3.1.0.RELEASE/spring-security-web-3.1.0.RELEASE.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/social/spring-social-core/1.0.2.RELEASE/spring-social-core-1.0.2.RELEASE.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/social/spring-social-facebook/1.0.1.RELEASE/spring-social-facebook-1.0.1.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/social/spring-social-twitter/1.0.1.RELEASE/spring-social-twitter-1.0.1.RELEASE.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/social/spring-social-web/1.0.2.RELEASE/spring-social-web-1.0.2.RELEASE.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-test/3.1.0.RELEASE/spring-test-3.1.0.RELEASE.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-tx/3.1.0.RELEASE/spring-tx-3.1.0.RELEASE.jar"/>

@@ -5,7 +5,7 @@ import com.tastbudz.model.User;
 public class UserException extends TastbudzException {
 	private static final long serialVersionUID = 5082698053689066722L;
 
-	private User user;
+	protected User user;
 	
 	public UserException() {
 		this(null);

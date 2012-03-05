@@ -7,13 +7,16 @@ import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.support.ResourceTransactionManager;
 
@@ -27,30 +30,28 @@ import com.tastbudz.dao.hibernate.DishDAOHibernate;
 import com.tastbudz.dao.hibernate.DrinkDAOHibernate;
 import com.tastbudz.dao.hibernate.RestaurantDAOHibernate;
 import com.tastbudz.dao.hibernate.UserDAOHibernate;
+import com.tastbudz.service.AccountService;
 import com.tastbudz.service.MenuService;
 import com.tastbudz.service.RestaurantService;
+import com.tastbudz.service.impl.AccountServiceImpl;
 import com.tastbudz.service.impl.MenuServiceImpl;
 import com.tastbudz.service.impl.RestaurantServiceImpl;
 
 @Configuration
-@ImportResource("classpath:/com/tastbudz/test-datasource.xml")
+@PropertySource("classpath:/com/tastbudz/test/datasource.properties")
 @ComponentScan("com.tastbudz.model,com.tastbudz.service,com.tastbudz.dao")
 @EnableTransactionManagement
 public class TestConfig {
-	private @Value("${database.url}") String url;
-	private @Value("${database.username}") String username;
-	private @Value("${database.password}") String password;
-	private @Value("${database.driver}") String driver;
-	private @Value("${database.dialect}") String dialect;
-	private @Value("${hbm2ddl.settings}") String hbm2ddlSettings;
-
+	@Autowired
+	Environment env;
+	
 	@Bean(name="dataSource")
     public DataSource getDataSource() {
         BasicDataSource ds = new BasicDataSource();
-        ds.setDriverClassName(driver);
-        ds.setUsername(username);
-        ds.setPassword(password);
-        ds.setUrl(url);
+        ds.setDriverClassName(getProperty("database.driver"));
+        ds.setUsername(getProperty("database.username"));
+        ds.setPassword(getProperty("database.password"));
+        ds.setUrl(getProperty("database.url"));
         return ds;
     }
 	
@@ -60,13 +61,13 @@ public class TestConfig {
 		try {
 			factoryBean = new LocalSessionFactoryBean();
             Properties pp = new Properties();
-            pp.setProperty("hibernate.dialect", dialect);
+            pp.setProperty("hibernate.dialect", getProperty("database.dialect"));
             pp.setProperty("hibernate.max_fetch_depth", "3");
             pp.setProperty("hibernate.show_sql", "true");
             pp.setProperty("hibernate.connection.pool_size", "5");
             pp.setProperty("hibernate.cache.use_query_cache", "false");
             pp.setProperty("hibernate.cache.use_second_level_cache", "true");
-            pp.setProperty("hibernate.hbm2ddl.auto", hbm2ddlSettings);
+            pp.setProperty("hibernate.hbm2ddl.auto", getProperty("hbm2ddl.settings"));
             pp.setProperty("cache.provider_class", "org.hibernate.cache.EhCacheProvider");
             factoryBean.setHibernateProperties(pp);
             factoryBean.setDataSource(getDataSource());
@@ -95,6 +96,11 @@ public class TestConfig {
 		return new MenuServiceImpl();
 	}
 	
+	@Bean
+	public AccountService getAccountService() {
+		return new AccountServiceImpl();
+	}
+	
 	/**
 	 * DAO beans
 	 */
@@ -120,4 +126,13 @@ public class TestConfig {
 		return new DrinkDAOHibernate();
 	}
 
+	
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new StandardPasswordEncoder("foo");
+	}
+
+	private String getProperty(String name) {
+		return env.getProperty(name);
+	}
 }

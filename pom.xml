@@ -90,6 +90,11 @@
       <version>${spring-social-facebook.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.springframework.social</groupId>
+      <artifactId>spring-social-twitter</artifactId>
+      <version>${spring-social-twitter.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-core</artifactId>
       <version>${spring.version}</version>
@@ -261,6 +266,7 @@
     <jackson.version>1.9.2</jackson.version>
     <spring-social.version>1.0.2.RELEASE</spring-social.version>
     <spring-social-facebook.version>1.0.1.RELEASE</spring-social-facebook.version>
+    <spring-social-twitter.version>1.0.1.RELEASE</spring-social-twitter.version>
   </properties>
   <reporting>
     <plugins>
