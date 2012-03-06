@@ -9,10 +9,12 @@ import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.stereotype.Repository;
 
 import com.tastbudz.dao.UserConnectionDAO;
 import com.tastbudz.model.UserConnection;
 
+@Repository("userConnectionDAO")
 public class UserConnectionHibernateDAO implements UserConnectionDAO {
 	@Autowired
 	protected SessionFactory sessionFactory;
