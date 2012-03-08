@@ -1,5 +1,7 @@
 package com.tastbudz.service;
 
+import org.springframework.social.connect.Connection;
+
 import com.tastbudz.model.ID;
 import com.tastbudz.model.User;
 

@@ -10,5 +10,6 @@ public interface Entity extends PropertyList, Serializable {
 	public int getVersion();
     public Date getDateCreated();
     public Date getDateUpdated();
+    public void setDateUpdated(Date d);
     public Entity makeQueryCriteria();
 }

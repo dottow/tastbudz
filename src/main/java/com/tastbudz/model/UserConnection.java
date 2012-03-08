@@ -1,25 +1,22 @@
 package com.tastbudz.model;
 
-import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 
 @Entity
-@Table(name="tstbdz_user_connection")
-public final class UserConnection implements Serializable {
+@Table(name="tstbdz_user_connection", uniqueConstraints = { @UniqueConstraint( columnNames = {"username", "provider_id", "provider_user_id"})})
+public final class UserConnection extends PersistentEntity {
 	private static final long serialVersionUID = -1099075070870944851L;
-	@Id
-	@Column(name="user_id", nullable=false)
+	@Column(name="username", nullable=false)
 	private String username;
-	@Id
-	@Column(name="provide_id", nullable=false)
+	@Column(name="provider_id", nullable=false)
 	private String providerId;
-	@Id
-	@Column(name="provider_user_id")
+	@Column(name="provider_user_id", nullable=false)
 	private String providerUserId;
 	@Column(name="display_name")
 	private String displayName;
@@ -37,10 +34,10 @@ public final class UserConnection implements Serializable {
 	private long expireTime;
 	
 	
-	public String getUserId() {
+	public String getUsername() {
 		return username;
 	}
-	public void setUserId(String username) {
+	public void setUsername(String username) {
 		this.username = username;
 	}
 	public String getProviderId() {
@@ -98,21 +95,35 @@ public final class UserConnection implements Serializable {
 		this.expireTime = expireTime;
 	}
 	
-	@Override
-	public boolean equals(Object o) {
-		if (o instanceof UserConnection) {
-			UserConnection other = (UserConnection)o;
-			if (!username.equals(other.username)) return false;
-			if (!providerId.equals(other.providerId)) return false;
-			if (!providerUserId.equals(other.providerUserId)) return false;
-			return true;
-		}
-		return false;
+	public String toString() {
+		return "UserConnection: "+username+"/"+providerId+"/"+providerUserId+"  "+displayName+","+accessToken;
 	}
 	
-	@Override
-	public int hashCode() {
-		int hashCode = username.hashCode() ^ providerId.hashCode();
-		return providerUserId == null ? hashCode : hashCode ^ providerUserId.hashCode();
+	public List<String> getPropertyNames() {
+		return null;
+	}
+
+	public void merge(UserConnection connection) {
+		setAccessToken(connection.getAccessToken());
+		setDisplayName(connection.getDisplayName());
+		setExpireTime(connection.getExpireTime());
+		setImageUrl(connection.getImageUrl());
+		setProfileUrl(connection.getProfileUrl());
+		setRefreshToken(connection.getRefreshToken());
+		setSecret(connection.getSecret());
+	}
+
+	public int compareTo(Object o) {
+		if (o instanceof UserConnection) {
+			UserConnection other = (UserConnection)o;
+			int i = username.compareTo(other.username);
+			if (i != 0) return i;
+			i = providerId.compareTo(other.providerId);
+			if (i != 0) return i;
+			i = providerUserId.compareTo(other.providerUserId);
+			if (i != 0) return i;
+			return 0;
+		}
+		return -1;
 	}
 }

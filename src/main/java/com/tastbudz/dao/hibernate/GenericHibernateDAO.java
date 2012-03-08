@@ -1,6 +1,7 @@
 package com.tastbudz.dao.hibernate;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -10,7 +11,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.stereotype.Repository;
 
 import com.tastbudz.dao.GenericDAO;
 import com.tastbudz.model.Entity;
@@ -48,7 +48,7 @@ public abstract class GenericHibernateDAO<T extends Entity, PK extends ID> imple
     
     @SuppressWarnings("unchecked")
     public T save(T entity) {
-    	sessionFactory.getCurrentSession().merge(entity);
+     	sessionFactory.getCurrentSession().merge(entity);
          return entity;
     }
     

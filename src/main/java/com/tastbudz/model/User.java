@@ -23,8 +23,12 @@ import com.tastbudz.json.PropertyListSerializer;
 public final class User extends PersistentEntity {
 	private static final long serialVersionUID = 2236662996587870009L;
 
+	private final static String TASTBUDZ = "Tastbudz";
+	
 	@Column(name="username", nullable=false, unique=true)
 	private String username;
+	@Column(name="provider", nullable=false)
+	private String provider;
 	@Column(name="email", nullable=false, unique=true)
 	private String email;
 	@Column(name="password", nullable=false)
@@ -48,6 +52,7 @@ public final class User extends PersistentEntity {
 	
 	public User() {
 		setProfile(new Profile());
+		setProvider(TASTBUDZ);
 	}
 	
 	public String getUsername() {
@@ -58,6 +63,14 @@ public final class User extends PersistentEntity {
 		this.username = username;
 	}
 
+	public String getProvider() {
+		return provider;
+	}
+	
+	public void setProvider(String provider) {
+		this.provider = provider;
+	}
+	
 	public String getEmail() {
 		return email;
 	}
@@ -114,5 +127,17 @@ public final class User extends PersistentEntity {
 	
 	public void merge(User user) {
 		setProfile(user.getProfile());
+	}
+	
+	@Override
+	public PersistentEntity makeQueryCriteria() {
+		User clone = (User)super.makeQueryCriteria();
+		clone.setProvider(null);
+		clone.setLocked(false);
+		return clone;
+	}
+	
+	public String toString() {
+		return "User: "+username+" (provider="+provider+")";
 	}
 }

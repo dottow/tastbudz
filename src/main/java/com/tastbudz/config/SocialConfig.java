@@ -8,20 +8,20 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.env.Environment;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.crypto.encrypt.Encryptors;
-import org.springframework.security.crypto.encrypt.TextEncryptor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.support.ConnectionFactoryRegistry;
+import org.springframework.social.connect.web.ConnectController;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.twitter.api.Twitter;
 import org.springframework.social.twitter.connect.TwitterConnectionFactory;
 
-import com.tastbudz.model.User;
 import com.tastbudz.social.connect.TastbudzUsersConnectionRepository;
+import com.tastbudz.social.facebook.PostToWallAfterConnectInterceptor;
 
 @Configuration
 @PropertySource("classpath:/com/tastbudz/social.properties")
@@ -30,19 +30,16 @@ public class SocialConfig {
 	private Environment env;
 
 	@Bean
+	@Scope(value="singleton", proxyMode=ScopedProxyMode.INTERFACES) 
     public ConnectionFactoryLocator connectionFactoryLocator() {
         ConnectionFactoryRegistry registry = new ConnectionFactoryRegistry();
         registry.addConnectionFactory(new FacebookConnectionFactory(env.getProperty("facebook.clientId"), env.getProperty("facebook.clientSecret")));
         registry.addConnectionFactory(new TwitterConnectionFactory(env.getProperty("twitter.consumerKey"), env.getProperty("twitter.consumerSecret")));
         return registry;
     }
-	
+		
 	@Bean
-	public TextEncryptor getTextEncryptor() {
-		return Encryptors.noOpText();
-	}
-	
-	@Bean
+	@Scope(value="singleton", proxyMode=ScopedProxyMode.INTERFACES) 
 	public UsersConnectionRepository usersConnectionRepository() {
 		TastbudzUsersConnectionRepository repository = new TastbudzUsersConnectionRepository();
 		return repository;
@@ -51,8 +48,8 @@ public class SocialConfig {
 	@Bean
 	@Scope(value="request", proxyMode=ScopedProxyMode.INTERFACES)
 	public ConnectionRepository connectionRepository() {
-	    User user = null; //TODO SecurityContext.getCurrentUser();
-	    return usersConnectionRepository().createConnectionRepository(user.getUsername());
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    return usersConnectionRepository().createConnectionRepository(authentication == null ? null : authentication.getName());
 	}
 
 	@Bean
@@ -67,4 +64,11 @@ public class SocialConfig {
 	    return connectionRepository().getPrimaryConnection(Facebook.class).getApi();
 	}
 
+	@Bean
+	public ConnectController connectController() {
+		ConnectController connectController = new ConnectController(connectionFactoryLocator(), connectionRepository());
+		connectController.addInterceptor(new PostToWallAfterConnectInterceptor());
+        //connectController.addInterceptor(new TweetAfterConnectInterceptor());
+		return connectController;
+	}
 }

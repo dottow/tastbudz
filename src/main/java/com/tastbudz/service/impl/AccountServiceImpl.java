@@ -6,6 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.social.connect.Connection;
+import org.springframework.social.connect.ConnectionData;
+import org.springframework.social.facebook.api.Facebook;
+import org.springframework.social.facebook.api.FacebookProfile;
+import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -85,9 +90,9 @@ public class AccountServiceImpl implements AccountService {
 		if (user == null) {
 			throw new UsernameNotFoundException(username);
 		}
-		if (!passwordEncoder.matches(password, user.getPassword())) {
-			throw new BadCredentialsException("Invalid password");
-		}
+//		if (!passwordEncoder.matches(password, user.getPassword())) {
+//			throw new BadCredentialsException("Invalid password");
+//		}
 		return user;
-	}
+	}	
 }

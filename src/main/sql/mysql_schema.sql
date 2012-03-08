@@ -78,6 +78,41 @@ create table tstbdz_restaurant_tstbdz_cuisine (
     cuisines_id binary(16) not null, 
 primary key (tstbdz_restaurant_id, cuisines_id));
 
+create table tstbdz_user (
+    id binary(16) not null, 
+    date_created timestamp not null, 
+    date_updated timestamp, 
+    version integer not null, 
+    username varchar(255) not null unique, 
+    provider varchar(255) not null, 
+    password varchar(255), 
+    email varchar(255), 
+    locked boolean not null, 
+primary key (id));
+
+create table tstbdz_profile (
+    user_id binary(16) not null, 
+    first_name varchar(255), 
+    last_name varchar(255), 
+primary key (user_id));
+
+create table tstbdz_user_connection (
+    id binary(16) not null, 
+    date_created timestamp not null, 
+    date_updated timestamp, 
+    version integer not null, 
+    username varchar(255) not null, 
+    provider_user_id varchar(255) not null, 
+    provider_id varchar(255) not null, 
+    access_token varchar(255) not null, 
+    display_name varchar(255), 
+    expire_time bigint, 
+    image_url varchar(255), 
+    profile_url varchar(255), 
+    refresh_token varchar(255), 
+    secret varchar(255), 
+primary key (id));
+
 
 alter table Location_streetAddressList add constraint FK_ADDRESS_LOCATION foreign key (Location_restaurant_id) references tstbdz_location;
 

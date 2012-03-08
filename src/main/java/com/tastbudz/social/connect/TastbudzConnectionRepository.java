@@ -8,6 +8,10 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import org.apache.log4j.Logger;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionData;
@@ -18,23 +22,33 @@ import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.DuplicateConnectionException;
 import org.springframework.social.connect.NoSuchConnectionException;
 import org.springframework.social.connect.NotConnectedException;
+import org.springframework.social.facebook.api.Facebook;
+import org.springframework.social.facebook.api.FacebookProfile;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import com.tastbudz.dao.UserConnectionDAO;
+import com.tastbudz.authentication.TastbudzAuthenticationToken;
+import com.tastbudz.model.User;
 import com.tastbudz.model.UserConnection;
+import com.tastbudz.service.AccountService;
+import com.tastbudz.service.ThirdPartyService;
 
 public class TastbudzConnectionRepository implements ConnectionRepository {
+	private static Logger logger = Logger.getLogger(TastbudzConnectionRepository.class);
+	
 	@Inject
 	private ConnectionFactoryLocator connectionFactoryLocator;
 	@Inject
-	private UserConnectionDAO userConnectionDAO;
-	@Inject
 	private TextEncryptor textEncryptor;
+	@Inject
+	private ThirdPartyService thirdPartyService;
+	@Inject
+	private AuthenticationProvider authenticationProvider;
 	
 	private String userId;
 	
 	public TastbudzConnectionRepository(String userId) {
+		logger.debug("TastbudzConnectionRepository: "+userId);
 		this.userId = userId;
 	}
 	
@@ -53,7 +67,8 @@ public class TastbudzConnectionRepository implements ConnectionRepository {
 	 * Returns an empty map if the user has no connections.
 	 */
 	public MultiValueMap<String, Connection<?>> findAllConnections() {
-		List<UserConnection> results = userConnectionDAO.getConnections(userId);
+		logger.debug("findAllConnections called.");
+		List<UserConnection> results = thirdPartyService.getConnections(userId);
 		List<Connection<?>> resultList = makeConnections(results);
 		MultiValueMap<String, Connection<?>> connections = new LinkedMultiValueMap<String, Connection<?>>();
 		Set<String> registeredProviderIds = connectionFactoryLocator.registeredProviderIds();
@@ -78,8 +93,11 @@ public class TastbudzConnectionRepository implements ConnectionRepository {
 	 * @return the connections the user has to the provider, or an empty list if none
 	 */
 	public List<Connection<?>> findConnections(String providerId) {
-		List<UserConnection> results = userConnectionDAO.getConnections(userId, providerId);
-		return makeConnections(results);
+		logger.debug("findConnections for provider: "+providerId);
+		List<UserConnection> results = thirdPartyService.getConnections(userId, providerId);
+		List<Connection<?>> connections = makeConnections(results);
+		logger.debug("Found "+connections.size()+" connections.");
+		return connections;
 	}
 
 	/**
@@ -106,6 +124,7 @@ public class TastbudzConnectionRepository implements ConnectionRepository {
 	 * @return the provider user connection map 
 	 */
 	public MultiValueMap<String, Connection<?>> findConnectionsToUsers(MultiValueMap<String, String> providerUsers) {
+		logger.debug("findConnectionsToUsers called.");
 		if (providerUsers == null || providerUsers.isEmpty()) {
 			throw new IllegalArgumentException("Unable to execute find: no providerUsers provided");
 		}
@@ -122,7 +141,7 @@ public class TastbudzConnectionRepository implements ConnectionRepository {
 //				providerUsersCriteriaSql.append(" or " );
 //			}
 //		}
-		List<UserConnection> results = userConnectionDAO.getConnections(userId);
+		List<UserConnection> results = thirdPartyService.getConnections(userId);
 		List<Connection<?>> resultList = null; //new NamedParameterJdbcTemplate(jdbcTemplate).query(selectFromUserConnection() + " where userId = :userId and " + providerUsersCriteriaSql + " order by providerId, rank", parameters, connectionMapper);
 		MultiValueMap<String, Connection<?>> connectionsForUsers = new LinkedMultiValueMap<String, Connection<?>>();
 		for (Connection<?> connection : resultList) {
@@ -150,11 +169,8 @@ public class TastbudzConnectionRepository implements ConnectionRepository {
 	 * @throws NoSuchConnectionException if no such connection exists for the current user
 	 */
 	public Connection<?> getConnection(ConnectionKey connectionKey) {
-		List<UserConnection> results = userConnectionDAO.getConnections(userId, connectionKey.getProviderId(), connectionKey.getProviderUserId());
-		if (results != null && results.size() == 0)
-			throw new NoSuchConnectionException(connectionKey);
-		
-		UserConnection connection = results.get(0);
+		logger.debug("getConnection: "+connectionKey);
+		UserConnection connection = thirdPartyService.getConnection(userId, connectionKey.getProviderId(), connectionKey.getProviderUserId());
 		return makeConnection(connection);
 	}
 
@@ -212,8 +228,23 @@ public class TastbudzConnectionRepository implements ConnectionRepository {
 	 * @throws DuplicateConnectionException if the user already has this connection
 	 */
 	public void addConnection(Connection<?> connection) {
+		logger.debug("addConnection called: "+connection);
+		User user=null;
+		if (userId == null) {
+			user = makeUserFromConnection(connection);
+			userId = user.getUsername();
+		}
+		else {
+			user = null; //TODO
+		}
+			
+		Authentication authentication = authenticationProvider.authenticate(new TastbudzAuthenticationToken(user, null));
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+
 		UserConnection userConnection = makeUserConnection(connection);
-		userConnectionDAO.createConnection(userConnection);
+		userConnection.setUsername(user.getUsername());
+		
+		thirdPartyService.saveConnection(userConnection);
 	}
 
 	/**
@@ -222,8 +253,8 @@ public class TastbudzConnectionRepository implements ConnectionRepository {
 	 * @param connection the existing connection to update in this repository
 	 */
 	public void updateConnection(Connection<?> connection) {
-		UserConnection userConnection = makeUserConnection(connection);
-		userConnectionDAO.updateConnection(userConnection);		
+		logger.debug("updateConnection called: "+connection);
+		addConnection(connection);
 	}
 
 	/**
@@ -232,7 +263,8 @@ public class TastbudzConnectionRepository implements ConnectionRepository {
 	 * @param providerId the provider id e.g. 'facebook'
 	 */
 	public void removeConnections(String providerId) {
-		userConnectionDAO.removeConnections(userId, providerId);
+		logger.debug("removeConnections for provider: "+providerId);
+		thirdPartyService.removeConnections(userId, providerId);
 	}
 
 	/**
@@ -241,7 +273,8 @@ public class TastbudzConnectionRepository implements ConnectionRepository {
 	 * @param connectionKey the connection key
 	 */
 	public void removeConnection(ConnectionKey connectionKey) {
-		userConnectionDAO.removeConnection(userId, connectionKey.getProviderId(), connectionKey.getProviderUserId());
+		logger.debug("removeConnection for : "+connectionKey);
+		thirdPartyService.removeConnection(userId, connectionKey.getProviderId(), connectionKey.getProviderUserId());
 	}
 	
 	private <A> String getProviderId(Class<A> apiType) {
@@ -284,7 +317,6 @@ public class TastbudzConnectionRepository implements ConnectionRepository {
 	private UserConnection makeUserConnection(Connection<?> connection) {
 		ConnectionData data = connection.createData();
 		UserConnection uc = new UserConnection();
-		uc.setUserId(userId);
 		uc.setProviderId(data.getProviderId());
 		uc.setProviderUserId(data.getProviderUserId());
 		uc.setAccessToken(encrypt(data.getAccessToken()));
@@ -303,5 +335,24 @@ public class TastbudzConnectionRepository implements ConnectionRepository {
 	private String encrypt(String text) {
 		return text != null ? textEncryptor.encrypt(text) : text;
 	}
+	
+	private User makeUserFromConnection(Connection connection) {
+		User user = new User();	
+		ConnectionData data = connection.createData();
+		user.setUsername(data.getDisplayName());
+		user.setProvider(data.getProviderId());
+		user.setPassword(data.getAccessToken());
+		if (connection.getApi() instanceof Facebook) {
+			Facebook facebook = (Facebook)connection.getApi();
+			FacebookProfile profile = facebook.userOperations().getUserProfile();
+			if (profile.getEmail() != null) {
+				user.setEmail(profile.getEmail());
+			}
+			user.getProfile().setFirstName(profile.getFirstName());
+			user.getProfile().setLastName(profile.getLastName());
+		}
+		return user;
+	}
+
 
 }

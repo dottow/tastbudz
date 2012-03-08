@@ -21,7 +21,7 @@ import org.springframework.transaction.support.ResourceTransactionManager;
 
 @Configuration
 @PropertySource("classpath:/com/tastbudz/datasource.properties")
-@Import(SecurityConfig.class)
+@Import({SecurityConfig.class, SocialConfig.class})
 @ComponentScan({"com.tastbudz.model","com.tastbudz.dao","com.tastbudz.service"})
 @EnableTransactionManagement
 public class AppConfig {
