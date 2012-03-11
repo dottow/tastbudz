@@ -238,9 +238,8 @@ public class TastbudzConnectionRepository implements ConnectionRepository {
 			user = null; //TODO
 		}
 			
-		Authentication authentication = authenticationProvider.authenticate(new TastbudzAuthenticationToken(user, null));
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-
+		authenticationProvider.authenticate(new TastbudzAuthenticationToken(user));
+		
 		UserConnection userConnection = makeUserConnection(connection);
 		userConnection.setUsername(user.getUsername());
 		

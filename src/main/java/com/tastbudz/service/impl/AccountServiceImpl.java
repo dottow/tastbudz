@@ -90,9 +90,15 @@ public class AccountServiceImpl implements AccountService {
 		if (user == null) {
 			throw new UsernameNotFoundException(username);
 		}
+		//TODO
 //		if (!passwordEncoder.matches(password, user.getPassword())) {
 //			throw new BadCredentialsException("Invalid password");
 //		}
 		return user;
 	}	
+	
+	@Transactional(readOnly=true)
+	public User getUser(String username) {
+		return userDAO.getUser(username);
+	}
 }

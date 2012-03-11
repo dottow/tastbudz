@@ -1,6 +1,7 @@
 package com.tastbudz.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,6 +13,9 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
 
 import com.tastbudz.json.PropertyListSerializer;
@@ -20,7 +24,7 @@ import com.tastbudz.json.PropertyListSerializer;
 @Entity
 @Table(name="tstbdz_user")
 @JsonSerialize(using=PropertyListSerializer.class)
-public final class User extends PersistentEntity {
+public final class User extends PersistentEntity implements UserDetails {
 	private static final long serialVersionUID = 2236662996587870009L;
 
 	private final static String TASTBUDZ = "Tastbudz";
@@ -139,5 +143,26 @@ public final class User extends PersistentEntity {
 	
 	public String toString() {
 		return "User: "+username+" (provider="+provider+")";
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return AuthorityUtils.createAuthorityList("ROLE_USER");
+	}
+
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	public boolean isAccountNonLocked() {
+		return !locked;
+	}
+
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	public boolean isEnabled() {
+		return true;
 	}
 }

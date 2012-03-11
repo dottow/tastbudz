@@ -32,9 +32,8 @@ public class RestaurantController {
 	@Autowired
 	private MenuService menuService;
 	
-	
 	@RequestMapping(value = "/", method = RequestMethod.POST, consumes="application/json")
-	public @ResponseBody Restaurant createRestaurant(@RequestBody Map map) {
+	public @ResponseBody Restaurant create(@RequestBody Map map) {
 		Restaurant restaurant = buildRestaurant(map);
 		if (restaurant != null) {
 			restaurant = restaurantService.createRestaurant(restaurant);
@@ -44,14 +43,14 @@ public class RestaurantController {
 	}
 
 	@RequestMapping(value = "/{restaurantId}", method = RequestMethod.GET)
-	public @ResponseBody Restaurant readRestaurant(@PathVariable("restaurantId")String restaurantId) {
+	public @ResponseBody Restaurant read(@PathVariable("restaurantId")String restaurantId) {
 		ID id = ID.fromString(restaurantId);
 		Restaurant restaurant = restaurantService.readRestaurant(id);
 		return restaurant;
 	}
 
 	@RequestMapping(value = "/{restaurantId}", method = RequestMethod.PUT, consumes="application/json")
-	public @ResponseBody Restaurant updateRestaurant(@PathVariable("restaurantId")String restaurantId, @RequestBody Map map) {
+	public @ResponseBody Restaurant update(@PathVariable("restaurantId")String restaurantId, @RequestBody Map map) {
 		ID id = ID.fromString(restaurantId);
 		Restaurant restaurant = buildRestaurant(map);
 		restaurant.setId(id);
@@ -61,20 +60,20 @@ public class RestaurantController {
 
 	
 	@RequestMapping(value = "/{restaurantId}", method = RequestMethod.DELETE)
-	public String deleteRestaurant(@PathVariable("restaurantId")String restaurantId) {
+	public String delete(@PathVariable("restaurantId")String restaurantId) {
 		ID id = ID.fromString(restaurantId);
 		restaurantService.deleteRestaurant(id);
 		return "redirect:/index";
 	}	
 
 	@RequestMapping(value = "/city/{city}", method = RequestMethod.GET)
-	public @ResponseBody List<? extends Object> getRestaurantsByCity(@PathVariable("city")String city) {
+	public @ResponseBody List<? extends Object> getByCity(@PathVariable("city")String city) {
 		List<Restaurant> restaurants = restaurantService.getRestaurantsByCity(city);
 		return restaurants;
 	}
 
 	@RequestMapping(value = "/city/{city}/{name}", method = RequestMethod.GET)
-	public @ResponseBody List<? extends Object> getRestaurantsByCity(@PathVariable("city")String city, @PathVariable("name")String name) {
+	public @ResponseBody List<? extends Object> getByCityLikeName(@PathVariable("city")String city, @PathVariable("name")String name) {
 		List<Restaurant> restaurants = restaurantService.getRestaurantsByCity(city, name);
 		return restaurants;
 	}

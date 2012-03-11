@@ -38,13 +38,18 @@
           </a>
           <a class="brand" href="/" id="tastbudz_logo"></a>
           <ul class="nav pull-right">
+<sec:authorize ifAllGranted="ROLE_USER">
+            <li>Hola, <a href="account/<sec:authentication property="principal.username"/>"><sec:authentication property="principal.username"/></a></li>
+</sec:authorize>
+<sec:authorize ifNotGranted="ROLE_USER">
             <li><a href="signup">Join</a></li>
             <li><a href="signin">Sign in</a></li>
             <li>
-            <form name="fbsignin" action="connect/facebook" method="post">
+            <form name="fbsignin" action="signin/connect/facebook" method="post">
 	        <input type="hidden" name="scope" value="email,publish_stream,user_photos,offline_access" />
                 <a href="javascript:document.fbsignin.submit()" id="fb_connect"></a>
             </form>
+</sec:authorize>
           </ul>
         </div>
       </div>

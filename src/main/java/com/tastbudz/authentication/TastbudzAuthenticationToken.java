@@ -1,23 +1,21 @@
 package com.tastbudz.authentication;
 
-import java.util.Collection;
-
 import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
 
 import com.tastbudz.model.User;
 
 public class TastbudzAuthenticationToken extends AbstractAuthenticationToken {
+	private static final long serialVersionUID = 5122605653506432008L;
 	private User user;
 	
-	public TastbudzAuthenticationToken(User user, Collection<? extends GrantedAuthority> authorities) {
-		super(authorities);
+	public TastbudzAuthenticationToken(User user) {
+		super(user.getAuthorities());
 		this.user = user;
 	}
 
 	@Override
 	public Object getCredentials() {
-		return null;  //TODO
+		return "";  //TODO
 	}
 
 	public Object getPrincipal() {

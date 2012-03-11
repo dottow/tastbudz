@@ -14,7 +14,9 @@
 		<intercept-url pattern="/resources/**" access="permitAll" />
 		<intercept-url pattern="/signin/**" access="permitAll" />
 		<intercept-url pattern="/signup/**" access="permitAll" />
-		<intercept-url pattern="/**" access="isAuthenticated()"  />
+		<intercept-url pattern="/**" access="permitAll"  />
+                
+                <remember-me user-service-ref="authenticationProvider" />
 	</http>
 
 	<authentication-manager alias="authenticationManager">
