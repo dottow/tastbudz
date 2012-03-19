@@ -10,6 +10,7 @@ import com.tastbudz.model.Consumable;
 import com.tastbudz.model.ID;
 import com.tastbudz.model.Restaurant;
 
+
 public abstract class ConsumableDAOHibernate<T extends Consumable, PK extends ID> extends GenericHibernateDAO<T, PK>
 		implements ConsumableDAO<T, PK> {
 	

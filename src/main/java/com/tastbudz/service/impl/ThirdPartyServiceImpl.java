@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tastbudz.dao.UserConnectionDAO;
@@ -13,6 +14,7 @@ import com.tastbudz.model.UserConnection;
 import com.tastbudz.service.ThirdPartyService;
 
 @Service
+@Transactional( propagation = Propagation.REQUIRES_NEW )
 public class ThirdPartyServiceImpl implements ThirdPartyService {
 	@Autowired
 	UserConnectionDAO userConnectionDAO;
@@ -42,7 +44,6 @@ public class ThirdPartyServiceImpl implements ThirdPartyService {
 		return userConnectionDAO.getConnection(userId, providerId, providerUserId);
 	}
 
-	@Transactional(readOnly=false)
 	public UserConnection saveConnection(UserConnection userConnection) {
 		Date updateDate = new Date();
 		UserConnection existing = getConnection(userConnection.getUsername(), userConnection.getProviderId(), userConnection.getProviderUserId());
@@ -58,12 +59,10 @@ public class ThirdPartyServiceImpl implements ThirdPartyService {
 		return userConnectionDAO.saveConnection(userConnection);
 	}
 
-	@Transactional(readOnly=false)
 	public void removeConnections(String userId, String providerId) {
 		userConnectionDAO.removeConnections(userId, providerId);
 	}
 
-	@Transactional(readOnly=false)
 	public void removeConnection(String userId, String providerId,
 			String providerUserId) {
 		userConnectionDAO.removeConnection(userId, providerId, providerUserId);

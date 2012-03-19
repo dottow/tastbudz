@@ -3,15 +3,10 @@ package com.tastbudz.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.social.connect.Connection;
-import org.springframework.social.connect.ConnectionData;
-import org.springframework.social.facebook.api.Facebook;
-import org.springframework.social.facebook.api.FacebookProfile;
-import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
@@ -23,13 +18,13 @@ import com.tastbudz.model.User;
 import com.tastbudz.service.AccountService;
 
 @Service
+@Transactional( propagation = Propagation.REQUIRES_NEW )
 public class AccountServiceImpl implements AccountService {
 	@Autowired
 	UserDAO userDAO;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	@Transactional
 	public User signUp(String email) {
 		Assert.notNull(email);
 		User query = new User();
@@ -43,7 +38,6 @@ public class AccountServiceImpl implements AccountService {
 		
 	}
 	
-	@Transactional
 	public User createUser(User user) {
 		User query = new User();
 		query.setUsername(user.getUsername());
@@ -62,7 +56,6 @@ public class AccountServiceImpl implements AccountService {
 		return userDAO.save(user);
 	}
 
-	@Transactional
 	public User updateUser(User user) {
 		User existing = userDAO.read(user.getId());
 		if (existing == null) {
@@ -72,7 +65,6 @@ public class AccountServiceImpl implements AccountService {
 		return userDAO.save(existing);
 	}
 	
-	@Transactional
 	public void deleteUser(ID id) {
 		User restaurant = userDAO.read(id);
 		userDAO.delete(restaurant);

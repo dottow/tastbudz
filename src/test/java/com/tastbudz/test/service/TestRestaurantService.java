@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -37,6 +38,7 @@ public class TestRestaurantService extends TestCase {
 	private RestaurantService service;
 	
 	@Test
+	@Rollback(true)
 	public void testSaveRestaurant() {
 		Restaurant restaurant = create54Mint();
 		Restaurant retval = service.createRestaurant(restaurant);
@@ -52,9 +54,12 @@ public class TestRestaurantService extends TestCase {
 		assertEquals("Actual Restaurant and service's returned "+
 	                    "restaurant must be equal",
 	                     restaurant, actualRestaurant);
+		
+		service.deleteRestaurant(restaurant.getId());
 	}
 
 	@Test
+	@Rollback(true)
 	public void testSaveExistingRestaurant() {
 		Restaurant restaurant = create54Mint();
 		service.createRestaurant(restaurant);

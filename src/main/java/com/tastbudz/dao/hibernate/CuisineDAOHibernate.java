@@ -4,12 +4,15 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tastbudz.dao.CuisineDAO;
 import com.tastbudz.model.Cuisine;
 import com.tastbudz.model.ID;
 
 @Repository("cuisineDAO")
+@Transactional( propagation = Propagation.MANDATORY )
 public class CuisineDAOHibernate extends GenericHibernateDAO<Cuisine, ID> implements
 		CuisineDAO {
 

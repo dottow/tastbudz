@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tastbudz.comparator.ComparatorFactory;
@@ -16,11 +17,11 @@ import com.tastbudz.model.Restaurant;
 import com.tastbudz.service.RestaurantService;
 
 @Service
+@Transactional( propagation = Propagation.REQUIRES_NEW )
 public class RestaurantServiceImpl implements RestaurantService {
 	@Autowired
 	RestaurantDAO restaurantDAO;
 
-	@Transactional
 	public Restaurant createRestaurant(Restaurant restaurant) {
 		Restaurant query = new Restaurant();
 		query.setName(restaurant.getName());
@@ -40,7 +41,6 @@ public class RestaurantServiceImpl implements RestaurantService {
 		return restaurantDAO.save(restaurant);
 	}
 
-	@Transactional
 	public Restaurant updateRestaurant(Restaurant restaurant) {
 		Restaurant existing = restaurantDAO.read(restaurant.getId());
 		if (existing == null) {
@@ -50,7 +50,6 @@ public class RestaurantServiceImpl implements RestaurantService {
 		return restaurantDAO.save(existing);
 	}
 	
-	@Transactional
 	public void deleteRestaurant(ID id) {
 		Restaurant restaurant = restaurantDAO.read(id);
 		restaurantDAO.delete(restaurant);

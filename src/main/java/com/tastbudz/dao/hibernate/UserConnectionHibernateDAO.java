@@ -1,11 +1,12 @@
 package com.tastbudz.dao.hibernate;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tastbudz.dao.UserConnectionDAO;
 import com.tastbudz.model.ID;
@@ -13,6 +14,7 @@ import com.tastbudz.model.UserConnection;
 
 
 @Repository("userConnectionDAO")
+@Transactional( propagation = Propagation.MANDATORY )
 public class UserConnectionHibernateDAO extends GenericHibernateDAO<UserConnection, ID> implements UserConnectionDAO {
 	public List<UserConnection> getConnections(String username) {
 		UserConnection connection = new UserConnection();

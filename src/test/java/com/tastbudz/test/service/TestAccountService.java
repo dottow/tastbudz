@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -32,6 +33,7 @@ public class TestAccountService extends TestCase {
 	private AccountService service;
 	
 	@Test
+	@Rollback(true)
 	public void testSaveUser() {
 		User user = createUser();
 		User retval = service.createUser(user);
@@ -49,9 +51,12 @@ public class TestAccountService extends TestCase {
 			assertFalse("We cannot create duplicate user with same username!", true);
 		}
 		catch (Throwable t) {}
+		
+		service.deleteUser(user.getId());
 	}
 
 	@Test
+	@Rollback(true)
 	public void testCredentials() {
 		User user = createUser();
 		service.createUser(user);
